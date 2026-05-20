@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
-    "build": "vite build",
+    "build": "npx vite build",
     "android": "cap sync android && cap open android",
     "ios": "cap sync ios && cap open ios",
     "build:android": "vite build && cap sync android",
