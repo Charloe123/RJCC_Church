@@ -2,7 +2,10 @@ import { createBrowserRouter, Navigate } from "react-router";
 import { AuthProvider } from "./context/auth-context";
 import { Layout } from "./components/layout";
 import { ProtectedRoute } from "./components/protected-route";
-import { Login } from "./pages/login";
+import LoginTypeSelection from "./pages/login";
+import { MemberLogin } from "./pages/member-login";
+import { AdminLogin } from "./pages/admin-login";
+import { UsherLogin } from "./pages/usher-login";
 import { Dashboard } from "./pages/dashboard";
 import { Members } from "./pages/members";
 import { Demographics } from "./pages/demographics";
@@ -13,6 +16,11 @@ import { Events } from "./pages/events";
 import { Communication } from "./pages/communication";
 import { Reports } from "./pages/reports";
 import { Settings } from "./pages/settings";
+import MemberDashboard from "./pages/member-dashboard";
+import UsherDashboard from "./pages/usher-dashboard";
+import UsherSettings from "./pages/usher-settings";
+import QRCodeCheckIn from "./pages/qr-code-check-in";
+import StaffLogin from "./pages/staff-login";
 
 function RootLayout({ children }: { children: React.ReactNode }) {
   return <AuthProvider>{children}</AuthProvider>;
@@ -20,14 +28,30 @@ function RootLayout({ children }: { children: React.ReactNode }) {
 
 export const router = createBrowserRouter([
   {
-    element: <RootLayout><Login /></RootLayout>,
-    path: "/login",
+    element: <RootLayout><LoginTypeSelection /></RootLayout>,
+    path: "/",
+  },
+  {
+    element: <RootLayout><StaffLogin /></RootLayout>,
+    path: "/staff-login",
+  },
+  {
+    element: <RootLayout><MemberLogin /></RootLayout>,
+    path: "/login/member",
+  },
+  {
+    element: <RootLayout><AdminLogin /></RootLayout>,
+    path: "/login/admin",
+  },
+  {
+    element: <RootLayout><UsherLogin /></RootLayout>,
+    path: "/login/usher",
   },
   {
     element: <RootLayout><ProtectedRoute><Layout /></ProtectedRoute></RootLayout>,
-    path: "/",
+    path: "/app",
     children: [
-      { index: true, element: <Dashboard /> },
+      { path: "admin", element: <Dashboard /> },
       { path: "members", element: <Members /> },
       { path: "demographics", element: <Demographics /> },
       { path: "new-believers", element: <NewBelievers /> },
@@ -37,7 +61,28 @@ export const router = createBrowserRouter([
       { path: "communication", element: <Communication /> },
       { path: "reports", element: <Reports /> },
       { path: "settings", element: <Settings /> },
+      { index: true, element: <Navigate to="/app/admin" replace /> },
     ],
+  },
+  {
+    element: <RootLayout><ProtectedRoute><MemberDashboard /></ProtectedRoute></RootLayout>,
+    path: "/app/member",
+  },
+  {
+    element: <RootLayout><ProtectedRoute><UsherDashboard /></ProtectedRoute></RootLayout>,
+    path: "/app/usher",
+  },
+  {
+    element: <RootLayout><ProtectedRoute><QRCodeCheckIn /></ProtectedRoute></RootLayout>,
+    path: "/app/usher/check-in",
+  },
+  {
+    element: <RootLayout><ProtectedRoute><UsherSettings /></ProtectedRoute></RootLayout>,
+    path: "/app/usher/settings",
+  },
+  {
+    path: "/login",
+    element: <Navigate to="/" replace />,
   },
   {
     path: "*",

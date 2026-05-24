@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
-import { Plus, Search, Mail, Phone, Users, User, Heart, Briefcase, Baby } from "lucide-react";
+import { Plus, Search, Mail, Phone } from "lucide-react";
 import { Badge } from "../components/ui/badge";
 import { AddAdvancedMemberModal } from "../components/add-advanced-member-modal";
 
@@ -34,105 +34,6 @@ export function Members() {
           <Plus className="w-4 h-4 mr-2" />
           Add Member
         </Button>
-      </div>
-
-      {/* Statistics */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-3">
-              <Users className="w-8 h-8 text-black" />
-              <div>
-                <p className="text-2xl font-bold">1,248</p>
-                <p className="text-xs text-muted-foreground">Total Members</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-3">
-              <User className="w-8 h-8 text-black" />
-              <div>
-                <p className="text-2xl font-bold">684</p>
-                <p className="text-xs text-muted-foreground">Male</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-3">
-              <User className="w-8 h-8 text-black" />
-              <div>
-                <p className="text-2xl font-bold">564</p>
-                <p className="text-xs text-muted-foreground">Female</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-3">
-              <Heart className="w-8 h-8 text-black" />
-              <div>
-                <p className="text-2xl font-bold">342</p>
-                <p className="text-xs text-muted-foreground">Families</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-3">
-              <Baby className="w-8 h-8 text-black" />
-              <div>
-                <p className="text-2xl font-bold">256</p>
-                <p className="text-xs text-muted-foreground">Children</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-3">
-              <Users className="w-8 h-8 text-black" />
-              <div>
-                <p className="text-2xl font-bold">184</p>
-                <p className="text-xs text-muted-foreground">Youth</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-3">
-              <Briefcase className="w-8 h-8 text-black" />
-              <div>
-                <p className="text-2xl font-bold">892</p>
-                <p className="text-xs text-muted-foreground">Employed</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-3">
-              <Heart className="w-8 h-8 text-black" />
-              <div>
-                <p className="text-2xl font-bold">618</p>
-                <p className="text-xs text-muted-foreground">Married</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
       </div>
 
       {/* Search and Filter */}

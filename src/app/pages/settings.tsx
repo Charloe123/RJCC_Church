@@ -1,3 +1,4 @@
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../components/ui/card";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
@@ -8,7 +9,7 @@ import { Bell, Shield, Database, Mail } from "lucide-react";
 
 export function Settings() {
   return (
-    <div className="p-6 lg:p-8 space-y-6">
+    <div className="flex-1 p-6 lg:p-8 space-y-6">
       {/* Header */}
       <div>
         <h1>Settings</h1>
