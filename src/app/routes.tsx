@@ -2,7 +2,7 @@ import { createBrowserRouter, Navigate } from "react-router";
 import { AuthProvider } from "./context/auth-context";
 import { Layout } from "./components/layout";
 import { ProtectedRoute } from "./components/protected-route";
-import LoginTypeSelection from "./pages/login";
+import { Login as LoginTypeSelection } from "./pages/login";
 import { MemberLogin } from "./pages/member-login";
 import { AdminLogin } from "./pages/admin-login";
 import { UsherLogin } from "./pages/usher-login";
