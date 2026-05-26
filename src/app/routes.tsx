@@ -1,11 +1,11 @@
+import React from 'react';
 import { createBrowserRouter, Navigate } from "react-router";
 import { AuthProvider } from "./context/auth-context";
 import { Layout } from "./components/layout";
 import { ProtectedRoute } from "./components/protected-route";
-import { Login as LoginTypeSelection } from "./pages/login";
+import LoginTypeSelection from "./pages/login";
 import { MemberLogin } from "./pages/member-login";
 import { AdminLogin } from "./pages/admin-login";
-import { UsherLogin } from "./pages/usher-login";
 import { Dashboard } from "./pages/dashboard";
 import { Members } from "./pages/members";
 import { Demographics } from "./pages/demographics";
@@ -17,10 +17,10 @@ import { Communication } from "./pages/communication";
 import { Reports } from "./pages/reports";
 import { Settings } from "./pages/settings";
 import MemberDashboard from "./pages/member-dashboard";
-import UsherDashboard from "./pages/usher-dashboard";
-import UsherSettings from "./pages/usher-settings";
+import { UsherSettings as MemberSettings } from "./pages/usher-settings";
 import QRCodeCheckIn from "./pages/qr-code-check-in";
 import StaffLogin from "./pages/staff-login";
+import { UsherSidebar } from "./components/UsherSidebar";
 
 function RootLayout({ children }: { children: React.ReactNode }) {
   return <AuthProvider>{children}</AuthProvider>;
@@ -44,10 +44,6 @@ export const router = createBrowserRouter([
     path: "/login/admin",
   },
   {
-    element: <RootLayout><UsherLogin /></RootLayout>,
-    path: "/login/usher",
-  },
-  {
     element: <RootLayout><ProtectedRoute><Layout /></ProtectedRoute></RootLayout>,
     path: "/app",
     children: [
@@ -69,16 +65,16 @@ export const router = createBrowserRouter([
     path: "/app/member",
   },
   {
-    element: <RootLayout><ProtectedRoute><UsherDashboard /></ProtectedRoute></RootLayout>,
-    path: "/app/usher",
+    element: <RootLayout><ProtectedRoute><MemberMembersView /></ProtectedRoute></RootLayout>,
+    path: "/app/member/members",
   },
   {
     element: <RootLayout><ProtectedRoute><QRCodeCheckIn /></ProtectedRoute></RootLayout>,
-    path: "/app/usher/check-in",
+    path: "/app/member/check-in",
   },
   {
-    element: <RootLayout><ProtectedRoute><UsherSettings /></ProtectedRoute></RootLayout>,
-    path: "/app/usher/settings",
+    element: <RootLayout><ProtectedRoute><MemberSettings /></ProtectedRoute></RootLayout>,
+    path: "/app/member/settings",
   },
   {
     path: "/login",
@@ -89,3 +85,16 @@ export const router = createBrowserRouter([
     element: <Navigate to="/" replace />,
   },
 ]);
+
+// Helper component to show the Members list with the Member Sidebar
+function MemberMembersView() {
+  const [darkMode, setDarkMode] = React.useState(false);
+  return (
+    <div className={`flex min-h-screen ${darkMode ? 'bg-slate-900' : 'bg-slate-50'}`}>
+      <UsherSidebar darkMode={darkMode} onToggleDarkMode={() => setDarkMode(!darkMode)} active="members" />
+      <div className="flex-1 overflow-y-auto">
+        <Members />
+      </div>
+    </div>
+  );
+}

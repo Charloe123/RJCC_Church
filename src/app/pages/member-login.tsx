@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { User, Eye, EyeOff, Chrome } from 'lucide-react';
 import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
-import { loginWithEmail, loginWithGoogle, demoLogin, auth } from '../../firebase/firebase';
+import { loginWithEmail, loginWithGoogle, auth } from '../../firebase/firebase';
 import { useAuth } from '../context/auth-context';
 
 export function MemberLogin() {
@@ -16,7 +16,7 @@ export function MemberLogin() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    
+
     if (!auth) {
       // Fallback demo mode
       if (memberId && password) {
@@ -41,7 +41,7 @@ export function MemberLogin() {
       }
     } else {
       const { success, error } = await loginWithEmail(memberId, password);
-      
+
       if (success) {
         const user = {
           email: memberId,
@@ -63,60 +63,13 @@ export function MemberLogin() {
         });
       }
     }
-    
-    setIsLoading(false);
-  };
 
-  const handleDemoLogin = async () => {
-    setIsLoading(true);
-    
-    if (!auth) {
-      // Fallback demo mode
-      const user = {
-        email: 'user@rjcc.org',
-        name: 'Member',
-        role: 'user' as const,
-        branch: 'Main Branch',
-      };
-
-        login(user);
-
-        toast.success("Login successful!", {
-          description: `Welcome, ${user.name}`,
-        });
-
-        navigate('/app/member');
-    } else {
-      const { success, error } = await demoLogin('user');
-      
-      if (success) {
-        const user = {
-          email: 'user@rjcc.org',
-          name: 'Member',
-          role: 'user' as const,
-          branch: 'Main Branch',
-        };
-
-        login(user);
-
-        toast.success("Login successful!", {
-          description: "Welcome, Member",
-        });
-
-        navigate('/app/member');
-      } else {
-        toast.error("Login failed", {
-          description: error || "Unable to authenticate",
-        });
-      }
-    }
-    
     setIsLoading(false);
   };
 
   const handleGoogleLogin = async () => {
     setIsLoading(true);
-    
+
     if (!auth) {
       // Fallback demo mode for Google
       const user = {
@@ -132,10 +85,10 @@ export function MemberLogin() {
         description: "Welcome, Google User",
       });
 
-      navigate('/app');
+      navigate('/app/member');
     } else {
       const { success, error } = await loginWithGoogle();
-      
+
       if (success) {
         const user = {
           email: memberId || 'google-user@rjcc.org',
@@ -157,7 +110,7 @@ export function MemberLogin() {
         });
       }
     }
-    
+
     setIsLoading(false);
   };
 
@@ -190,16 +143,16 @@ export function MemberLogin() {
       {/* Main Login Card */}
       <div className="w-full max-w-md bg-white rounded-3xl border border-slate-200/80 p-8 shadow-sm">
         
-        {/* Sub-header */}
-        <div className="mb-7">
-          <div className="flex items-center gap-3 text-black font-semibold text-xl mb-2">
-            <User className="w-5 h-5 stroke-[2.5]" />
-            <h2>Member Sign In</h2>
-          </div>
-          <p className="text-slate-500 text-base leading-normal font-normal">
-            Enter your Member ID and password to access your dashboard
-          </p>
-        </div>
+         {/* Sub-header */}
+         <div className="mb-7">
+           <div className="flex items-center gap-3 text-black text-xl mb-2">
+             <User className="w-5 h-5 stroke-[2.5]" />
+             <h2>Member Sign In</h2>
+           </div>
+           <p className="text-slate-500 text-base leading-normal">
+             Enter your Member ID and password to access your dashboard
+           </p>
+         </div>
 
         {/* Form */}
         <form onSubmit={handleLogin} className="space-y-5">
@@ -278,31 +231,6 @@ export function MemberLogin() {
             Sign in with Google
           </button>
         </form>
-
-        {/* Quick Login Divider */}
-        <div className="relative flex py-5 items-center mt-4">
-          <div className="flex-grow border-t border-slate-200"></div>
-          <span className="flex-shrink mx-4 text-xs font-bold tracking-wider text-slate-400 uppercase">
-            Quick Login (Demo)
-          </span>
-          <div className="flex-grow border-t border-slate-200"></div>
-        </div>
-
-        {/* Demo Button & Helper text */}
-        <div className="text-center">
-          <button 
-            type="button" 
-            onClick={handleDemoLogin}
-            disabled={isLoading}
-            className="w-full bg-white border border-slate-200 hover:border-slate-300 text-black text-sm font-semibold py-3 rounded-xl flex items-center justify-center gap-2 transition-colors shadow-sm disabled:opacity-50"
-          >
-            <User className="w-4 h-4 stroke-[2.5]" />
-            Demo Member Login
-          </button>
-          <p className="text-slate-400 text-sm mt-2.5 font-normal">
-            Click for instant demo access
-          </p>
-        </div>
 
         {/* Footer Link Inside Card */}
         <div className="border-t border-slate-100 mt-6 pt-5 text-center">

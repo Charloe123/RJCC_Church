@@ -27,11 +27,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const ADMIN_EMAILS = ['nkosi@uncommon.org'];
 
-const isAdmin = (email: string | null | undefined) => {
-  return email && ADMIN_EMAILS.includes(email.toLowerCase());
-};
+  const isAuthorizedEmail = (email: string | null | undefined) => {
+    if (!email) return false;
+    return ADMIN_EMAILS.includes(email.toLowerCase());
+  };
 
-useEffect(() => {
+  useEffect(() => {
     // Check localStorage for existing auth first
     const authStatus = localStorage.getItem('rjcc_auth');
     const storedUser = localStorage.getItem('rjcc_user');
@@ -49,7 +50,7 @@ useEffect(() => {
     if (auth) {
       unsubscribe = onAuthStateChanged(auth, (firebaseUser: FirebaseUser | null) => {
         if (firebaseUser) {
-          if (isAdmin(firebaseUser.email)) {
+          if (isAuthorizedEmail(firebaseUser.email)) {
             const userData: User = {
               email: firebaseUser.email || '',
               name: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'Admin',
@@ -60,7 +61,7 @@ useEffect(() => {
             localStorage.setItem('rjcc_auth', 'true');
             localStorage.setItem('rjcc_user', JSON.stringify(userData));
           } else {
-            // User is not authorized as admin
+            // User is not authorized
             signOut(auth);
             localStorage.removeItem('rjcc_auth');
             localStorage.removeItem('rjcc_user');

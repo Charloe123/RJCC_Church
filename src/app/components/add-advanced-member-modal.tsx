@@ -13,6 +13,8 @@ import { Label } from "./ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { toast } from "sonner";
 import { User, Heart, Briefcase, Users } from "lucide-react";
+import { addDoc, collection } from "firebase/firestore";
+import { db } from "../../firebase/firebase";
 
 interface AddAdvancedMemberModalProps {
   open: boolean;
@@ -55,38 +57,73 @@ export function AddAdvancedMemberModal({ open, onOpenChange }: AddAdvancedMember
     phone: string;
   }>>([]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    toast.success("Member registered successfully!", {
-      description: `${formData.fullName} has been added to the system.`,
-    });
+    try {
+      if (db) {
+        await addDoc(collection(db, "members"), {
+          name: formData.fullName,
+          email: formData.email,
+          phone: formData.phone,
+          status: "Active",
+          branch: formData.branch,
+          gender: formData.gender,
+          dateOfBirth: formData.dateOfBirth,
+          nationalId: formData.nationalId,
+          altPhone: formData.altPhone,
+          address: formData.address,
+          city: formData.city,
+          maritalStatus: formData.maritalStatus,
+          spouseName: formData.spouseName,
+          spousePhone: formData.spousePhone,
+          spouseMemberId: formData.spouseMemberId,
+          employmentStatus: formData.employmentStatus,
+          companyName: formData.companyName,
+          jobTitle: formData.jobTitle,
+          industry: formData.industry,
+          children: children,
+          createdAt: new Date().toISOString(),
+        });
+        toast.success("Member registered successfully!", {
+          description: `${formData.fullName} has been added to the database.`,
+        });
+      } else {
+        toast.success("Member registered successfully!", {
+          description: `${formData.fullName} has been added (local mode).`,
+        });
+      }
 
-    // Reset form
-    setFormData({
-      fullName: "",
-      gender: "Male",
-      dateOfBirth: "",
-      nationalId: "",
-      phone: "",
-      altPhone: "",
-      email: "",
-      address: "",
-      city: "",
-      branch: "Main Branch",
-      maritalStatus: "Single",
-      spouseName: "",
-      spousePhone: "",
-      spouseMemberId: "",
-      isSpouseMember: "No",
-      employmentStatus: "Employed",
-      companyName: "",
-      jobTitle: "",
-      industry: "",
-    });
-    setChildren([]);
+// Reset form
+      setFormData({
+        fullName: "",
+        gender: "Male",
+        dateOfBirth: "",
+        nationalId: "",
+        phone: "",
+        altPhone: "",
+        email: "",
+        address: "",
+        city: "",
+        branch: "Main Branch",
+        maritalStatus: "Single",
+        spouseName: "",
+        spousePhone: "",
+        spouseMemberId: "",
+        isSpouseMember: "No",
+        employmentStatus: "Employed",
+        companyName: "",
+        jobTitle: "",
+        industry: "",
+      });
+      setChildren([]);
 
-    onOpenChange(false);
+      onOpenChange(false);
+    } catch (error: any) {
+      toast.error("Failed to register member", {
+        description: error.message || "Please try again",
+      });
+    }
   };
 
   const addChild = () => {

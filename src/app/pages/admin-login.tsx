@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Shield, Eye, EyeOff, Chrome } from 'lucide-react';
 import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
-import { loginWithEmail, loginWithGoogle, demoLogin, auth } from '../../firebase/firebase';
+import { loginWithEmail, loginWithGoogle, auth } from '../../firebase/firebase';
 import { useAuth } from '../context/auth-context';
 
 export function AdminLogin() {
@@ -16,7 +16,13 @@ export function AdminLogin() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    
+
+    if (email.toLowerCase() !== 'nkosi@uncommon.org') {
+      toast.error("Access denied", { description: "Only authorized admin email is allowed" });
+      setIsLoading(false);
+      return;
+    }
+
     // Try Firebase first
     if (auth) {
       const { success, error } = await loginWithEmail(email, password);
@@ -38,69 +44,28 @@ export function AdminLogin() {
       setIsLoading(false);
       return;
     }
-    
+
     // Fallback demo mode (when auth is null)
-    if (email && password) {
-      const user = {
-        email: email,
-        name: email.split('@')[0] || email,
-        role: 'admin' as const,
-        branch: 'Main Branch',
-      };
-      login(user);
-      toast.success("Login successful!", { description: `Welcome, ${user.name}` });
-      navigate('/app/admin');
-    } else {
-      toast.error("Login failed", { description: "Please enter both email and password" });
-    }
+    const user = {
+      email: email,
+      name: email.split('@')[0] || email,
+      role: 'admin' as const,
+      branch: 'Main Branch',
+    };
+    login(user);
+    toast.success("Login successful!", { description: `Welcome, ${user.name}` });
+    navigate('/app/admin');
     setIsLoading(false);
   };
 
-const handleDemoLogin = async () => {
-     setIsLoading(true);
-     
-     // Try Firebase first
-     if (auth) {
-       const { success, error } = await demoLogin('admin');
-       
-       if (success) {
-         const user = {
-           email: 'nkosi@uncommon.org',
-           name: 'Admin',
-           role: 'admin' as const,
-           branch: 'Main Branch',
-         };
-         login(user);
-         toast.success("Login successful!", { description: "Welcome, Admin" });
-         navigate('/app/admin');
-         setIsLoading(false);
-         return;
-       }
-       // If Firebase fails, fall through to demo mode
-       console.warn('Firebase demo login failed, using local demo mode:', error);
-     }
-     
-     // Demo mode fallback
-     const user = {
-       email: 'nkosi@uncommon.org',
-       name: 'Admin',
-       role: 'admin' as const,
-       branch: 'Main Branch',
-     };
-     login(user);
-     toast.success("Login successful!", { description: "Welcome, Admin (Demo Mode)" });
-     navigate('/app/admin');
-     setIsLoading(false);
-   };
-
   const handleGoogleLogin = async () => {
     setIsLoading(true);
-    
+
     if (!auth) {
       // Fallback demo mode for Google
       const user = {
-        email: 'google-admin@rjcc.org',
-        name: 'Google Admin',
+        email: 'nkosi@uncommon.org',
+        name: 'Admin',
         role: 'admin' as const,
         branch: 'Main Branch',
       };
@@ -108,35 +73,33 @@ const handleDemoLogin = async () => {
       login(user);
 
       toast.success("Login successful!", {
-        description: "Welcome, Google Admin",
+        description: "Welcome, Admin (Demo Mode)",
       });
 
       navigate('/app/admin');
     } else {
       const { success, error } = await loginWithGoogle();
-      
+
       if (success) {
-        const user = {
-          email: email || 'google-admin@rjcc.org',
-          name: 'Google Admin',
-          role: 'admin' as const,
-          branch: 'Main Branch',
-        };
-
-        login(user);
-
-        toast.success("Login successful!", {
-          description: "Welcome!",
-        });
-
-        navigate('/app/admin');
+        // The onAuthStateChanged in auth-context will handle Firebase user
+        // but we need to check if email is authorized
+        const currentUser = auth.currentUser;
+        if (currentUser?.email?.toLowerCase() === 'nkosi@uncommon.org') {
+          toast.success("Login successful!", {
+            description: `Welcome, ${currentUser.displayName || 'Admin'}`,
+          });
+          navigate('/app/admin');
+        } else {
+          toast.error("Access denied", { description: "Only nkosi@uncommon.org is allowed" });
+          await auth.signOut();
+        }
       } else {
         toast.error("Google login failed", {
           description: error || "Unable to authenticate with Google",
         });
       }
     }
-    
+
     setIsLoading(false);
   };
 
@@ -183,22 +146,22 @@ const handleDemoLogin = async () => {
         {/* Form */}
         <form onSubmit={handleLogin} className="space-y-5">
           
-          {/* Email Field */}
-          <div>
-            <label className="block text-black font-semibold text-base mb-2">
-              Email
-            </label>
-            <input 
-              type="email" 
-              placeholder="nkosi@uncommon.org" 
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full bg-slate-100/80 border border-transparent rounded-xl px-4 py-3.5 text-lg text-slate-700 placeholder-slate-400 font-medium focus:outline-none focus:bg-slate-50 focus:border-slate-300 transition-colors"
-            />
-            <span className="block text-slate-400 text-base mt-1.5 font-normal">
-              Your admin email address
-            </span>
-          </div>
+{/* Email Field */}
+           <div>
+             <label className="block text-black font-semibold text-base mb-2">
+               Email
+             </label>
+             <input 
+               type="email" 
+               placeholder="nkosi@uncommon.org" 
+               value={email}
+               onChange={(e) => setEmail(e.target.value)}
+               className="w-full bg-slate-100/80 border border-transparent rounded-xl px-4 py-3.5 text-lg text-slate-700 placeholder-slate-400 font-medium focus:outline-none focus:bg-slate-50 focus:border-slate-300 transition-colors"
+             />
+             <span className="block text-slate-400 text-base mt-1.5 font-normal">
+               Authorized admin email only
+             </span>
+           </div>
 
           {/* Password Field */}
           <div>
@@ -257,31 +220,6 @@ const handleDemoLogin = async () => {
             Sign in with Google
           </button>
         </form>
-
-        {/* Quick Login Divider */}
-        <div className="relative flex py-5 items-center mt-4">
-          <div className="flex-grow border-t border-slate-200"></div>
-          <span className="flex-shrink mx-4 text-xs font-bold tracking-wider text-slate-400 uppercase">
-            Quick Login (Demo)
-          </span>
-          <div className="flex-grow border-t border-slate-200"></div>
-        </div>
-
-        {/* Demo Button & Helper text */}
-        <div className="text-center">
-          <button 
-            type="button" 
-            onClick={handleDemoLogin}
-            disabled={isLoading}
-            className="w-full bg-white border border-slate-200 hover:border-slate-300 text-black text-sm font-semibold py-3 rounded-xl flex items-center justify-center gap-2 transition-colors shadow-sm disabled:opacity-50"
-          >
-            <Shield className="w-4 h-4 stroke-[2.5]" />
-            Demo Admin Login
-          </button>
-          <p className="text-slate-400 text-sm mt-2.5 font-normal">
-            Click for instant demo access
-          </p>
-        </div>
 
         {/* Footer Link Inside Card */}
         <div className="border-t border-slate-100 mt-6 pt-5 text-center">

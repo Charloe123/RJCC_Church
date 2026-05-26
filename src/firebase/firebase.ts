@@ -41,6 +41,7 @@ export const loginWithGoogle = async () => {
 };
 
 export const demoLogin = async (role: string) => {
-  // Mock implementation for instant demo access
-  return { success: true };
+  // Demo login - user must already exist in Firebase Auth with nkosi@uncommon.org
+  // This is just a placeholder - actual demo access should use localStorage
+  return { success: true, error: undefined };
 };

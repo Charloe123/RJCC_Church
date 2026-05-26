@@ -25,16 +25,16 @@ import { OfflineIndicator } from "./offline-indicator";
 import { MobileBottomNav } from "./mobile-bottom-nav";
 
 const navItems = [
-  { path: "/", label: "Dashboard", icon: LayoutDashboard },
-  { path: "/members", label: "Members", icon: Users },
-  { path: "/demographics", label: "Demographics", icon: BarChart3 },
-  { path: "/new-believers", label: "New Believers", icon: UserPlus },
-  { path: "/attendance", label: "Attendance", icon: Calendar },
-  { path: "/giving", label: "Giving", icon: DollarSign },
-  { path: "/events", label: "Events", icon: CalendarDays },
-  { path: "/communication", label: "Communication", icon: MessageSquare },
-  { path: "/reports", label: "Reports", icon: FileText },
-  { path: "/settings", label: "Settings", icon: SettingsIcon },
+  { path: "/app/admin", label: "Dashboard", icon: LayoutDashboard },
+  { path: "/app/members", label: "Members", icon: Users },
+  { path: "/app/demographics", label: "Demographics", icon: BarChart3 },
+  { path: "/app/new-believers", label: "New Believers", icon: UserPlus },
+  { path: "/app/attendance", label: "Attendance", icon: Calendar },
+  { path: "/app/giving", label: "Giving", icon: DollarSign },
+  { path: "/app/events", label: "Events", icon: CalendarDays },
+  { path: "/app/communication", label: "Communication", icon: MessageSquare },
+  { path: "/app/reports", label: "Reports", icon: FileText },
+  { path: "/app/settings", label: "Settings", icon: SettingsIcon },
 ];
 
 export function Layout() {

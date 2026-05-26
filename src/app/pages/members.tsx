@@ -1,21 +1,54 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Plus, Search, Mail, Phone } from "lucide-react";
 import { Badge } from "../components/ui/badge";
 import { AddAdvancedMemberModal } from "../components/add-advanced-member-modal";
+import { collection, addDoc, getDocs, query, onSnapshot } from "firebase/firestore";
+import { db } from "../../firebase/firebase";
 
-const members = [
-  { id: 1, name: "John Adeyemi", email: "john.a@email.com", phone: "+234 801 234 5678", status: "Active", branch: "Main Branch" },
-  { id: 2, name: "Grace Okafor", email: "grace.o@email.com", phone: "+234 802 345 6789", status: "Active", branch: "North Branch" },
-  { id: 3, name: "David Mensah", email: "david.m@email.com", phone: "+234 803 456 7890", status: "Active", branch: "Main Branch" },
-  { id: 4, name: "Sarah Williams", email: "sarah.w@email.com", phone: "+234 804 567 8901", status: "Inactive", branch: "South Branch" },
-  { id: 5, name: "Emmanuel Nwosu", email: "emmanuel.n@email.com", phone: "+234 805 678 9012", status: "Active", branch: "East Branch" },
-];
+interface Member {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  status: string;
+  branch: string;
+  gender?: string;
+  dateOfBirth?: string;
+  nationalId?: string;
+  altPhone?: string;
+  address?: string;
+  city?: string;
+  maritalStatus?: string;
+  spouseName?: string;
+  spousePhone?: string;
+  spouseMemberId?: string;
+  employmentStatus?: string;
+  companyName?: string;
+  jobTitle?: string;
+  industry?: string;
+}
 
 export function Members() {
   const [addMemberOpen, setAddMemberOpen] = useState(false);
+  const [members, setMembers] = useState<Member[]>([]);
+
+  useEffect(() => {
+    if (!db) return;
+
+    const q = query(collection(db, "members"));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const membersList = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      } as Member));
+      setMembers(membersList);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   return (
     <div className="p-6 lg:p-8 space-y-6">

@@ -48,13 +48,13 @@ return (
       {/* MAIN CONTENT AREA */}
       <main className="flex-1 p-8 overflow-y-auto relative">
          
-        {/* Header Greeting */}
-        <header className="mb-6">
-          <h1 className="text-3xl font-bold tracking-tight text-black flex items-center gap-2">
-            Welcome, Church Member <span className="animate-bounce">👋</span>
-          </h1>
-          <p className="text-gray-500 mt-1 text-base">Your personal church member dashboard</p>
-        </header>
+         {/* Header Greeting */}
+         <header className="mb-6">
+           <h1 className="text-3xl tracking-tight text-black flex items-center gap-2">
+             Welcome, Church Member <span className="animate-bounce">👋</span>
+           </h1>
+           <p className="text-gray-500 mt-1 text-base">Your personal church member dashboard</p>
+         </header>
 
         {/* FOUR COLOR METRIC TILES */}
         <section className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
@@ -104,12 +104,12 @@ return (
               </div>
             </div>
 
-            {/* Meta ID Info Details */}
-            <div className="text-center space-y-1 mb-6">
-              <p className="font-bold text-gray-800 text-lg">Member ID: 2222</p>
-              <p className="text-gray-400 text-sm">2222@member.rjcc.org</p>
-              <p className="text-gray-400 text-sm">+244 801 234 5678</p>
-            </div>
+             {/* Meta ID Info Details */}
+             <div className="text-center space-y-0.5 mb-4">
+               <p className="text-lg text-gray-800">Member ID: 2222</p>
+               <p className="text-xs text-gray-400">2222@member.rjcc.org</p>
+               <p className="text-xs text-gray-400">+244 801 234 5678</p>
+             </div>
 
             {/* ID Card Action Buttons */}
             <div className="flex gap-2 w-full">
@@ -134,45 +134,44 @@ return (
               <p className="text-gray-400 text-sm">Watch or download past sermons</p>
             </div>
 
-            {/* Sermons Stack */}
-            <div className="space-y-4">
-              {sermons.map((sermon, idx) => (
-                <div key={idx} className="flex items-center justify-between p-4 border border-gray-100 rounded-xl hover:border-gray-200 transition-colors">
-                  <div className="space-y-1">
-                    <h3 className="font-bold text-gray-900 text-base">{sermon.title}</h3>
-                    <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-gray-400">
-                      <span>{sermon.speaker}</span>
-                      <span>•</span>
-                      <span>{sermon.date}</span>
-                    </div>
-                    <div className="flex items-center gap-2 mt-2">
-                      <span className="text-xs text-gray-400 flex items-center gap-1">
-                        <span className="w-3 h-3 border border-gray-400 rounded-full flex items-center justify-center text-[8px]">i</span> 
-                        {sermon.duration}
-                      </span>
-                      <span className="bg-[#f1e5ff] text-[#8a3ffc] text-xs px-2 py-0.5 rounded-full font-medium">
-                        {sermon.tag}
-                      </span>
-                    </div>
-                  </div>
+             {/* Sermons Stack */}
+             <div className="space-y-4">
+               {sermons.map((sermon, idx) => (
+                 <div key={idx} className="flex items-center justify-between p-4 border border-gray-100 rounded-xl hover:border-gray-200 transition-colors">
+                   <div className="space-y-1">
+                     <h3 className="text-gray-900 text-base">{sermon.title}</h3>
+                     <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-gray-400">
+                       <span>{sermon.speaker}</span>
+                       <span>•</span>
+                       <span>{sermon.date}</span>
+                     </div>
+                     <div className="flex items-center gap-2 mt-2">
+                       <span className="text-xs text-gray-400 flex items-center gap-1">
+                         <span className="w-3 h-3 border border-gray-400 rounded-full flex items-center justify-center text-[8px]">i</span> 
+                         {sermon.duration}
+                       </span>
+                       <span className="bg-[#f1e5ff] text-[#8a3ffc] text-xs px-2 py-0.5 rounded-full font-medium">
+                         {sermon.tag}
+                       </span>
+                     </div>
+                   </div>
 
-                  {/* Sermon Row Interactive Buttons */}
-                  <div className="flex items-center gap-2">
-                    <button className="flex items-center gap-1.5 px-4 py-2 border border-gray-200 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors">
-                      <span>Watch</span>
-                    </button>
-                    <button className="p-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-gray-600">
-                      <Download size={16} />
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
+                   {/* Sermon Row Interactive Buttons */}
+                   <div className="flex items-center gap-2">
+                     <button className="flex items-center gap-1.5 px-4 py-2 border border-gray-200 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors">
+                       <span>Watch</span>
+                     </button>
+                     <button className="p-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-gray-600">
+                       <Download size={16} />
+                     </button>
+                   </div>
+                 </div>
+               ))}
+             </div>
           </div>
+        </div> {/* Closes the Two Column Grid */}
 
-        </div>
-
-        {/* Float Help Bubble Icon */}
+        {/* Floating Help Bubble Icon */}
         <button className="fixed bottom-6 right-6 bg-neutral-900 text-white p-3 rounded-full shadow-lg hover:bg-neutral-800 transition-colors">
           <HelpCircle size={24} />
         </button>

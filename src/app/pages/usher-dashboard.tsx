@@ -88,14 +88,14 @@ export default function UsherDashboard() {
       <UsherSidebar darkMode={darkMode} onToggleDarkMode={() => setDarkMode(!darkMode)} active="home" />
 
       {/* MAIN CONTENT CONTAINER */}
-      <main className="flex-1 p-8 max-w-7xl mx-auto w-full">
+      <main className="flex-1 p-8 overflow-y-auto">
         
         {/* Welcome Header */}
         <header className="mb-8">
-          <h2 className="text-2xl font-bold tracking-tight flex items-center gap-2">
+          <h2 className={`text-2xl font-bold tracking-tight flex items-center gap-2 ${darkMode ? 'text-white' : 'text-slate-900'}`}>
             Welcome, Usher <span className="animate-pulse">👋</span>
           </h2>
-          <p className="text-sm text-slate-500 mt-1">Your usher portal for efficient member check-in and registration</p>
+          <p className="text-sm text-slate-500 mt-1">Your portal for member check-in and registration</p>
         </header>
 
         {/* 4-Column Stat Cards Row */}
