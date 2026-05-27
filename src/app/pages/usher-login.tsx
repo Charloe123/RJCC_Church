@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 import { loginWithEmail, loginWithGoogle, auth } from '../../firebase/firebase';
 import { useAuth } from '../context/auth-context';
 
-export function UsherLogin() {
+export default function UsherLogin() {
   const navigate = useNavigate();
   const { login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);

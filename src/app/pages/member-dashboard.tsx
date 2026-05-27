@@ -14,8 +14,11 @@ import {
   LogOut
 } from 'lucide-react';
 import { UsherSidebar } from '../components/UsherSidebar';
+import { useNavigate } from 'react-router';
+import { QRCodeSVG } from 'qrcode.react';
 
 export default function MemberDashboard() {
+  const navigate = useNavigate();
   const [darkMode, setDarkMode] = useState(false);
   const sermons = [
     {
@@ -43,7 +46,7 @@ export default function MemberDashboard() {
 
 return (
     <div className={`flex min-h-screen ${darkMode ? 'bg-slate-900 text-white' : 'bg-[#f8f9fa] text-[#212529]'}`}>
-      <UsherSidebar darkMode={darkMode} onToggleDarkMode={() => setDarkMode(!darkMode)} active="home" />
+      <UsherSidebar darkMode={darkMode} onToggleDarkMode={() => setDarkMode(!darkMode)} active="home" basePath="member" />
 
       {/* MAIN CONTENT AREA */}
       <main className="flex-1 p-8 overflow-y-auto relative">
@@ -65,7 +68,10 @@ return (
           </div>
 
           {/* Donate - Green */}
-          <div className="bg-[#24a148] text-white p-6 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:opacity-95 transition-opacity min-h-[120px]">
+          <div 
+            onClick={() => navigate('/app/member/donate')}
+            className="bg-[#24a148] text-white p-6 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:opacity-95 transition-opacity min-h-[120px]"
+          >
             <Heart size={24} className="mb-2" />
             <span className="font-medium">Donate</span>
           </div>
@@ -86,7 +92,7 @@ return (
           </div>
         </section>
 
-        {/* TWO COLUMN GRID LAYOUT */}
+{/* TWO COLUMN GRID LAYOUT */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           
           {/* Left Column: Member ID Card */}
@@ -98,18 +104,22 @@ return (
             
             {/* Main QR Code Container */}
             <div className="bg-gray-50 border border-gray-100 p-4 rounded-xl mb-6 w-full flex justify-center max-w-[240px]">
-              {/* Fallback QR UI Placeholder mimicking the crisp contrast of the asset */}
-              <div className="w-44 h-44 bg-neutral-900 flex items-center justify-center text-white text-xs text-center rounded p-2 font-mono">
-                [ QR Code Matrix Area ]
-              </div>
+              <QRCodeSVG
+                value="2222"
+                size={176}
+                bgColor="#f9fafb"
+                fgColor="#111827"
+                level="M"
+                includeMargin={false}
+              />
             </div>
 
-             {/* Meta ID Info Details */}
-             <div className="text-center space-y-0.5 mb-4">
-               <p className="text-lg text-gray-800">Member ID: 2222</p>
-               <p className="text-xs text-gray-400">2222@member.rjcc.org</p>
-               <p className="text-xs text-gray-400">+244 801 234 5678</p>
-             </div>
+            {/* Meta ID Info Details */}
+            <div className="text-center space-y-0.5 mb-4">
+              <p className="text-lg text-gray-800">Member ID: 2222</p>
+              <p className="text-xs text-gray-400">2222@member.rjcc.org</p>
+              <p className="text-xs text-gray-400">+244 801 234 5678</p>
+            </div>
 
             {/* ID Card Action Buttons */}
             <div className="flex gap-2 w-full">
@@ -134,40 +144,40 @@ return (
               <p className="text-gray-400 text-sm">Watch or download past sermons</p>
             </div>
 
-             {/* Sermons Stack */}
-             <div className="space-y-4">
-               {sermons.map((sermon, idx) => (
-                 <div key={idx} className="flex items-center justify-between p-4 border border-gray-100 rounded-xl hover:border-gray-200 transition-colors">
-                   <div className="space-y-1">
-                     <h3 className="text-gray-900 text-base">{sermon.title}</h3>
-                     <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-gray-400">
-                       <span>{sermon.speaker}</span>
-                       <span>•</span>
-                       <span>{sermon.date}</span>
-                     </div>
-                     <div className="flex items-center gap-2 mt-2">
-                       <span className="text-xs text-gray-400 flex items-center gap-1">
-                         <span className="w-3 h-3 border border-gray-400 rounded-full flex items-center justify-center text-[8px]">i</span> 
-                         {sermon.duration}
-                       </span>
-                       <span className="bg-[#f1e5ff] text-[#8a3ffc] text-xs px-2 py-0.5 rounded-full font-medium">
-                         {sermon.tag}
-                       </span>
-                     </div>
-                   </div>
+            {/* Sermons Stack */}
+            <div className="space-y-4">
+              {sermons.map((sermon, idx) => (
+                <div key={idx} className="flex items-center justify-between p-4 border border-gray-100 rounded-xl hover:border-gray-200 transition-colors">
+                  <div className="space-y-1">
+                    <h3 className="text-gray-900 text-base">{sermon.title}</h3>
+                    <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-gray-400">
+                      <span>{sermon.speaker}</span>
+                      <span>•</span>
+                      <span>{sermon.date}</span>
+                    </div>
+                    <div className="flex items-center gap-2 mt-2">
+                      <span className="text-xs text-gray-400 flex items-center gap-1">
+                        <span className="w-3 h-3 border border-gray-400 rounded-full flex items-center justify-center text-[8px]">i</span> 
+                        {sermon.duration}
+                      </span>
+                      <span className="bg-[#f1e5ff] text-[#8a3ffc] text-xs px-2 py-0.5 rounded-full font-medium">
+                        {sermon.tag}
+                      </span>
+                    </div>
+                  </div>
 
-                   {/* Sermon Row Interactive Buttons */}
-                   <div className="flex items-center gap-2">
-                     <button className="flex items-center gap-1.5 px-4 py-2 border border-gray-200 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors">
-                       <span>Watch</span>
-                     </button>
-                     <button className="p-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-gray-600">
-                       <Download size={16} />
-                     </button>
-                   </div>
-                 </div>
-               ))}
-             </div>
+                  {/* Sermon Row Interactive Buttons */}
+                  <div className="flex items-center gap-2">
+                    <button className="flex items-center gap-1.5 px-4 py-2 border border-gray-200 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors">
+                      <span>Watch</span>
+                    </button>
+                    <button className="p-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-gray-600">
+                      <Download size={16} />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div> {/* Closes the Two Column Grid */}
 

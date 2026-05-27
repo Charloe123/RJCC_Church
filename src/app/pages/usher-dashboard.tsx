@@ -85,7 +85,7 @@ export default function UsherDashboard() {
 
   return (
     <div className={`flex min-h-screen ${darkMode ? 'bg-slate-900 text-white' : 'bg-slate-50 text-slate-800'}`}>
-      <UsherSidebar darkMode={darkMode} onToggleDarkMode={() => setDarkMode(!darkMode)} active="home" />
+      <UsherSidebar darkMode={darkMode} onToggleDarkMode={() => setDarkMode(!darkMode)} active="home" basePath="usher" />
 
       {/* MAIN CONTENT CONTAINER */}
       <main className="flex-1 p-8 overflow-y-auto">

@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { CheckCircle, Users, Clock, TrendingUp, Camera, UserCheck } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { CheckCircle, Users, Clock, TrendingUp, UserCheck, QrCode } from 'lucide-react';
 import { UsherSidebar } from '../components/UsherSidebar';
 import { db } from '../../firebase/firebase';
 import { collection, addDoc, serverTimestamp, query, orderBy, limit, onSnapshot } from 'firebase/firestore';
+import { toast } from 'sonner';
+import { useLocation } from 'react-router';
 
 export default function QRCodeCheckIn() {
   const [darkMode, setDarkMode] = useState(false);
@@ -14,6 +16,10 @@ export default function QRCodeCheckIn() {
     latest: '--:--',
     attendance: '0%'
   });
+  const [scanning, setScanning] = useState(false);
+  const html5QrCodeRef = useRef<any>(null);
+  const location = useLocation();
+  const basePath = location.pathname.includes('/usher/') ? 'usher' : 'member';
 
   // Real-time listener for recent check-ins
   useEffect(() => {
@@ -35,31 +41,66 @@ export default function QRCodeCheckIn() {
     return () => unsubscribe();
   }, []);
 
-  const handleCheckIn = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!memberId.trim()) return;
+  const handleCheckIn = async (scannedId: string) => {
+    if (!scannedId.trim()) return;
 
     const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     
-    // Sync activity with Firebase Firestore
     try {
       await addDoc(collection(db, 'checkins'), {
-        memberId: memberId,
-        name: `Member ${memberId}`,
+        memberId: scannedId,
+        name: `Member ${scannedId}`,
         status: "Checked in",
         timestamp: serverTimestamp(),
         time: currentTime,
-        initial: memberId.charAt(0).toUpperCase()
+        initial: scannedId.charAt(0).toUpperCase()
       });
-      setMemberId(''); // Clear input on success
+      toast.success("Check-in recorded successfully!");
+      setMemberId('');
     } catch (error) {
       console.error("Error saving check-in to Firebase:", error);
+      toast.error("Failed to record check-in");
     }
+  };
+
+  const startScanner = async () => {
+    setScanning(true);
+    try {
+      const module = await import('html5-qrcode');
+      const Html5Qrcode = module.Html5Qrcode;
+      html5QrCodeRef.current = new Html5Qrcode("qr-reader");
+      await html5QrCodeRef.current.start(
+        { facingMode: "environment" },
+        { fps: 10, qrbox: 250 },
+        (decodedText: string) => {
+          handleCheckIn(decodedText);
+        },
+        (errorMessage: string) => {
+          console.log("QR scan error:", errorMessage);
+        }
+      );
+    } catch (err) {
+      console.error("Error starting scanner:", err);
+      toast.error("Failed to start camera scanner");
+      setScanning(false);
+    }
+  };
+
+  const stopScanner = async () => {
+    if (html5QrCodeRef.current) {
+      try {
+        await html5QrCodeRef.current.stop();
+        html5QrCodeRef.current = null;
+      } catch (err) {
+        console.error("Error stopping scanner:", err);
+      }
+    }
+    setScanning(false);
   };
 
   return (
     <div className={`flex min-h-screen ${darkMode ? 'bg-slate-900 text-white' : 'bg-slate-50 text-slate-800'}`}>
-      <UsherSidebar darkMode={darkMode} onToggleDarkMode={() => setDarkMode(!darkMode)} active="check-in" />
+      <UsherSidebar darkMode={darkMode} onToggleDarkMode={() => setDarkMode(!darkMode)} active="check-in" basePath={basePath} />
       
       <div className="flex-1 p-6 sm:p-8 font-sans">
         {/* Header */}
@@ -122,7 +163,7 @@ export default function QRCodeCheckIn() {
             <div>
               <div className="flex items-start space-x-2 mb-1">
                 <div className="text-slate-700 mt-0.5">
-                  <Camera className="w-5 h-5" />
+                  <QrCode className="w-5 h-5" />
                 </div>
                 <div>
                   <h2 className="text-base font-bold">QR Code Scanner</h2>
@@ -130,10 +171,17 @@ export default function QRCodeCheckIn() {
                 </div>
               </div>
 
-              <button className="w-full mt-6 bg-black hover:bg-slate-800 text-white font-medium py-3 px-4 rounded-xl flex items-center justify-center space-x-2 transition-colors">
-                <Camera className="w-5 h-5" />
-                <span>Start Camera Scanner</span>
+              <button 
+                onClick={scanning ? stopScanner : startScanner}
+                className="w-full mt-6 bg-black hover:bg-slate-800 text-white font-medium py-3 px-4 rounded-xl flex items-center justify-center space-x-2 transition-colors"
+              >
+                <QrCode className="w-5 h-5" />
+                <span>{scanning ? 'Stop Camera' : 'Start Camera Scanner'}</span>
               </button>
+
+              {scanning && (
+                <div id="qr-reader" className="w-full mt-4 rounded-xl overflow-hidden" />
+              )}
 
               <div className="relative my-6 flex items-center justify-center">
                 <div className="absolute inset-0 flex items-center">
@@ -142,7 +190,7 @@ export default function QRCodeCheckIn() {
                 <span className={`relative px-3 text-xs uppercase tracking-wider font-medium ${darkMode ? 'bg-slate-800 text-slate-500' : 'bg-white text-slate-400'}`}>OR</span>
               </div>
 
-              <form onSubmit={handleCheckIn} className="flex space-x-2">
+              <div className="flex space-x-2">
                 <input
                   type="text"
                   placeholder="Enter Member ID manually"
@@ -151,13 +199,13 @@ export default function QRCodeCheckIn() {
                   className={`flex-1 border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black transition-all placeholder-slate-400 ${darkMode ? 'bg-slate-900 border-slate-700 text-white' : 'bg-slate-50 border-slate-200'}`}
                 />
                 <button
-                  type="submit"
+                  onClick={() => handleCheckIn(memberId)}
                   className={`border rounded-xl px-4 py-2.5 flex items-center space-x-1.5 text-sm font-medium transition-colors ${darkMode ? 'border-slate-700 hover:bg-slate-700 text-slate-300' : 'border-slate-200 hover:bg-slate-50 text-slate-700'}`}
                 >
                   <UserCheck className="w-4 h-4 text-slate-500" />
                   <span>Check In</span>
                 </button>
-              </form>
+              </div>
             </div>
 
             <div className={`mt-8 rounded-xl p-4 border ${darkMode ? 'bg-slate-900/50 border-slate-700' : 'bg-slate-50 border-slate-100'}`}>

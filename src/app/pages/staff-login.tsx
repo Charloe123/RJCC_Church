@@ -8,7 +8,7 @@ import { useAuth } from '../context/auth-context';
 export default function StaffLogin() {
   const navigate = useNavigate();
   const { login } = useAuth();
-  const [role, setRole] = useState<'admin' | 'user'>('user');
+  const [role, setRole] = useState<'admin' | 'usher'>('usher');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -31,12 +31,12 @@ export default function StaffLogin() {
         const user = {
           email: email,
           name: email.split('@')[0] || 'Admin',
-          role: 'admin' as const,
+          role: role as 'admin' | 'usher',
           branch: 'Main Branch',
         };
         login(user);
         toast.success("Login successful!", { description: `Welcome, ${user.name}` });
-        if (role === 'Admin') {
+        if (role === 'admin') {
           navigate('/app/admin');
         } else {
           navigate('/app/usher');
@@ -53,12 +53,12 @@ export default function StaffLogin() {
     const user = {
       email: email,
       name: email.split('@')[0] || 'Admin',
-      role: 'admin' as const,
+      role: role as 'admin' | 'usher',
       branch: 'Main Branch',
     };
     login(user);
     toast.success("Login successful!", { description: `Welcome, ${user.name}` });
-    if (role === 'Admin') {
+    if (role === 'admin') {
       navigate('/app/admin');
     } else {
       navigate('/app/usher');
@@ -98,30 +98,30 @@ export default function StaffLogin() {
            <div>
              <label className="block text-xs font-bold text-slate-700 mb-2">Login As</label>
              <div className="grid grid-cols-2 gap-3">
-               <button
-                 type="button"
-                 onClick={() => setRole('user')}
-                 className={`flex items-center justify-center gap-2 py-2.5 px-4 text-xs font-bold rounded-xl border transition-all ${
-                   role === 'user'
-                     ? 'bg-black border-black text-white'
-                     : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
-                 }`}
-               >
-                 <User size={14} />
-                 Usher
-               </button>
-               <button
-                 type="button"
-                 onClick={() => setRole('Admin')}
-                 className={`flex items-center justify-center gap-2 py-2.5 px-4 text-xs font-bold rounded-xl border transition-all ${
-                   role === 'Admin'
-                     ? 'bg-black border-black text-white'
-                     : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
-                 }`}
-               >
-                 <Shield size={14} />
-                 Admin
-               </button>
+<button
+                  type="button"
+                  onClick={() => setRole('usher')}
+                  className={`flex items-center justify-center gap-2 py-2.5 px-4 text-xs font-bold rounded-xl border transition-all ${
+                    role === 'usher'
+                      ? 'bg-black border-black text-white'
+                      : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
+                  }`}
+                >
+                  <User size={14} />
+                  Usher
+                </button>
+<button
+                  type="button"
+                  onClick={() => setRole('admin')}
+                  className={`flex items-center justify-center gap-2 py-2.5 px-4 text-xs font-bold rounded-xl border transition-all ${
+                    role === 'admin'
+                      ? 'bg-black border-black text-white'
+                      : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
+                  }`}
+                >
+                  <Shield size={14} />
+                  Admin
+                </button>
              </div>
            </div>
 

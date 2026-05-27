@@ -1,22 +1,27 @@
 import React from 'react';
-import { Home, Users, QrCode, Settings, Moon, LogOut } from 'lucide-react';
+import { Home, Users, Settings, Moon, LogOut, QrCode } from 'lucide-react';
 import { useNavigate } from 'react-router';
 
 interface UsherSidebarProps {
   active: 'home' | 'members' | 'check-in' | 'settings';
   darkMode: boolean;
   onToggleDarkMode: () => void;
+  basePath?: 'member' | 'usher';
 }
 
-export function UsherSidebar({ active, darkMode, onToggleDarkMode }: UsherSidebarProps) {
+export function UsherSidebar({ active, darkMode, onToggleDarkMode, basePath = 'member' }: UsherSidebarProps) {
   const navigate = useNavigate();
 
   const menuItems = [
-    { name: 'Member Home', icon: Home, id: 'home', path: '/app/member' },
-    { name: 'Members', icon: Users, id: 'members', path: '/app/member/members' },
-    { name: 'QR Check-In', icon: QrCode, id: 'check-in', path: '/app/member/check-in' },
-    { name: 'Settings', icon: Settings, id: 'settings', path: '/app/member/settings' },
+    { name: basePath === 'usher' ? 'Usher Home' : 'Member Home', icon: Home, id: 'home', path: `/app/${basePath}` },
+    ...(basePath === 'usher' ? [
+      { name: 'Members', icon: Users, id: 'members', path: `/app/${basePath}/members` },
+      { name: 'QR Check-In', icon: QrCode, id: 'check-in', path: `/app/${basePath}/check-in` }
+    ] : []),
+    { name: 'Settings', icon: Settings, id: 'settings', path: `/app/${basePath}/settings` },
   ];
+
+  const userLabel = basePath === 'usher' ? 'Usher' : 'Member';
 
   return (
     <div className="w-[280px] h-screen bg-black text-gray-400 flex flex-col justify-between p-4 font-sans selection:bg-transparent sticky top-0">
@@ -64,11 +69,11 @@ export function UsherSidebar({ active, darkMode, onToggleDarkMode }: UsherSideba
         {/* User Card */}
         <div className="flex items-center gap-4 bg-zinc-900/60 border border-zinc-800/40 p-4 rounded-2xl mb-4 mx-1">
           <div className="w-11 h-11 bg-slate-800 rounded-full flex items-center justify-center text-white border border-slate-700">
-            <span className="text-lg font-semibold">U</span>
+            <span className="text-lg font-semibold">{userLabel.charAt(0)}</span>
           </div>
           <div>
-            <h3 className="text-white font-bold text-[15px] leading-tight">Member</h3>
-            <p className="text-xs text-gray-500 mt-0.5">Church Member</p>
+            <h3 className="text-white font-bold text-[15px] leading-tight">{userLabel}</h3>
+            <p className="text-xs text-gray-500 mt-0.5">{userLabel} Portal</p>
           </div>
         </div>
 
