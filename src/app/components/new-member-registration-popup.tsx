@@ -71,26 +71,26 @@ export default function NewMemberRegistrationPopup({ onClose }: NewMemberRegistr
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-2 sm:p-4">
       
       {/* Popup Container */}
-      <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full p-6 relative border border-gray-100 max-h-[calc(100vh-4rem)] overflow-y-auto">
+      <div className="bg-white rounded-xl shadow-2xl w-full max-w-md sm:max-w-xl md:max-w-2xl p-4 sm:p-6 relative border border-gray-100 max-h-[calc(100vh-2rem)] sm:max-h-[calc(100vh-4rem)] overflow-y-auto">
         
         {/* Close Button */}
-        <button className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition" onClick={onClose}>
-          <X className="w-5 h-5" />
+        <button className="absolute top-3 sm:top-4 right-3 sm:right-4 text-gray-400 hover:text-gray-600 transition" onClick={onClose}>
+          <X className="w-4 h-4 sm:w-5 sm:h-5" />
         </button>
 
         {/* Header */}
-        <div className="mb-6">
-          <h2 className="text-xl font-bold text-gray-900">Register New Member</h2>
-          <p className="text-sm text-gray-500 mt-0.5">
+        <div className="mb-4 sm:mb-6">
+          <h2 className="text-lg sm:text-xl font-bold text-gray-900">Register New Member</h2>
+          <p className="text-xs sm:text-sm text-gray-500 mt-0.5">
             Complete member profile with family and employment details
           </p>
         </div>
 
         {/* Tab Navigation */}
-        <div className="bg-gray-100 p-1 rounded-xl flex space-x-1 mb-6">
+        <div className="bg-gray-100 p-0.5 sm:p-1 rounded-xl flex space-x-0.5 sm:space-x-1 mb-4 sm:mb-6">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -98,14 +98,14 @@ export default function NewMemberRegistrationPopup({ onClose }: NewMemberRegistr
               <button
                 key={tab.id}
                 onClick={() => handleTabClick(tab.id)}
-                className={`flex items-center justify-center gap-2 flex-1 py-2 px-3 text-sm font-medium rounded-lg transition-all duration-200 ${
+                className={`flex items-center justify-center gap-1 sm:gap-2 flex-1 py-1.5 sm:py-2 px-1.5 sm:px-3 text-xs sm:text-sm font-medium rounded-lg transition-all duration-200 ${
                   isActive
                     ? 'bg-white text-gray-900 shadow-sm'
                     : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
                 }`}
               >
-                <Icon className={`w-4 h-4 ${isActive ? 'text-gray-900' : 'text-gray-500'}`} />
-                {tab.label}
+                <Icon className={`w-3 h-3 sm:w-4 sm:h-4 ${isActive ? 'text-gray-900' : 'text-gray-500'}`} />
+                <span className="hidden xs:inline">{tab.label}</span>
               </button>
             );
           })}
@@ -113,24 +113,24 @@ export default function NewMemberRegistrationPopup({ onClose }: NewMemberRegistr
 
         {/* Form Content (Conditional rendering can be added based on activeTab) */}
         {!showAdvancedPopup && activeTab === 'Personal' && (
-          <form className="space-y-4" onSubmit={handleSubmit}>
+          <form className="space-y-3 sm:space-y-4" onSubmit={handleSubmit}>
             
             {/* Row 1 */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-0.5 sm:mb-1">
                   Full Name <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
-                  className="w-full px-3 py-2 bg-gray-50 border border-transparent rounded-lg focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition"
+                  className="w-full px-2.5 sm:px-3 py-1.5 sm:py-2 bg-gray-50 border border-transparent rounded-lg focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition text-sm"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-0.5 sm:mb-1">
                   Gender <span className="text-red-500">*</span>
                 </label>
-                <select className="w-full px-3 py-2 bg-gray-50 border border-transparent rounded-lg focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%234a5568%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:0.65em_auto] bg-[right_12px_center] bg-no-repeat pr-10">
+                <select className="w-full px-2.5 sm:px-3 py-1.5 sm:py-2 bg-gray-50 border border-transparent rounded-lg focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition text-sm appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%234a5568%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:0.65em_auto] bg-[right_10px_center] sm:bg-[right_12px_center] bg-no-repeat pr-8 sm:pr-10">
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
                   <option value="Other">Other</option>
@@ -139,91 +139,91 @@ export default function NewMemberRegistrationPopup({ onClose }: NewMemberRegistr
             </div>
 
             {/* Row 2 */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-0.5 sm:mb-1">
                   Date of Birth <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
                   <input
                     type="date"
-                    className="w-full px-3 py-2 bg-gray-50 border border-transparent rounded-lg focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition text-gray-400"
+                    className="w-full px-2.5 sm:px-3 py-1.5 sm:py-2 bg-gray-50 border border-transparent rounded-lg focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition text-sm text-gray-400"
                     placeholder="mm/dd/yyyy"
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-0.5 sm:mb-1">
                   National ID / Passport
                 </label>
                 <input
                   type="text"
-                  className="w-full px-3 py-2 bg-gray-50 border border-transparent rounded-lg focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition"
+                  className="w-full px-2.5 sm:px-3 py-1.5 sm:py-2 bg-gray-50 border border-transparent rounded-lg focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition text-sm"
                 />
               </div>
             </div>
 
             {/* Row 3 */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-0.5 sm:mb-1">
                   Phone Number <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="tel"
-                  className="w-full px-3 py-2 bg-gray-50 border border-transparent rounded-lg focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition"
+                  className="w-full px-2.5 sm:px-3 py-1.5 sm:py-2 bg-gray-50 border border-transparent rounded-lg focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition text-sm"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-0.5 sm:mb-1">
                   Alternative Phone
                 </label>
                 <input
                   type="tel"
-                  className="w-full px-3 py-2 bg-gray-50 border border-transparent rounded-lg focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition"
+                  className="w-full px-2.5 sm:px-3 py-1.5 sm:py-2 bg-gray-50 border border-transparent rounded-lg focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition text-sm"
                 />
               </div>
             </div>
 
             {/* Row 4 */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-0.5 sm:mb-1">
                   Email Address
                 </label>
                 <input
                   type="email"
-                  className="w-full px-3 py-2 bg-gray-50 border border-transparent rounded-lg focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition"
+                  className="w-full px-2.5 sm:px-3 py-1.5 sm:py-2 bg-gray-50 border border-transparent rounded-lg focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition text-sm"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-0.5 sm:mb-1">
                   City <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
-                  className="w-full px-3 py-2 bg-gray-50 border border-transparent rounded-lg focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition"
+                  className="w-full px-2.5 sm:px-3 py-1.5 sm:py-2 bg-gray-50 border border-transparent rounded-lg focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition text-sm"
                 />
               </div>
             </div>
 
             {/* Row 5 - Full Width Physical Address */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-0.5 sm:mb-1">
                 Physical Address
               </label>
               <input
                 type="text"
-                className="w-full px-3 py-2 bg-gray-50 border border-transparent rounded-lg focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition"
+                className="w-full px-2.5 sm:px-3 py-1.5 sm:py-2 bg-gray-50 border border-transparent rounded-lg focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition text-sm"
               />
             </div>
 
             {/* Row 6 - Full Width Branch Dropdown */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-0.5 sm:mb-1">
                 Branch/Campus <span className="text-red-500">*</span>
               </label>
-              <select className="w-full px-3 py-2 bg-gray-50 border border-transparent rounded-lg focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%234a5568%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:0.65em_auto] bg-[right_12px_center] bg-no-repeat pr-10">
+              <select className="w-full px-2.5 sm:px-3 py-1.5 sm:py-2 bg-gray-50 border border-transparent rounded-lg focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition text-sm appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%234a5568%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:0.65em_auto] bg-[right_10px_center] sm:bg-[right_12px_center] bg-no-repeat pr-8 sm:pr-10">
                 <option value="Main Branch">Main Branch</option>
                 <option value="East Branch">East Branch</option>
                 <option value="West Branch">West Branch</option>
@@ -232,10 +232,10 @@ export default function NewMemberRegistrationPopup({ onClose }: NewMemberRegistr
             </div>
 
             {/* Action Buttons */}
-            <div className="flex justify-end pt-4">
+            <div className="flex justify-end pt-3 sm:pt-4">
               <button
                 type="submit"
-                className="bg-black hover:bg-gray-800 text-white font-medium py-2 px-6 rounded-lg transition active:scale-[0.98]"
+                className="bg-black hover:bg-gray-800 text-white font-medium py-1.5 sm:py-2 px-4 sm:px-6 rounded-lg transition active:scale-[0.98] text-sm"
               >
                 Register Member
               </button>
