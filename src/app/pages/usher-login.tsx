@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { User, Eye, EyeOff, Chrome } from 'lucide-react';
 import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
-import { loginWithEmail, loginWithGoogle, auth } from '../../firebase/firebase';
 import { useAuth } from '../context/auth-context';
 
 export default function UsherLogin() {
@@ -17,13 +16,8 @@ export default function UsherLogin() {
     e.preventDefault();
     setIsLoading(true);
 
-    if (email.toLowerCase() !== 'nkosi@uncommon.org') {
-      toast.error("Access denied", { description: "Only authorized email is allowed" });
-      setIsLoading(false);
-      return;
-    }
-
-    if (!auth) {
+    // Demo mode - usher login works without Firebase
+    if (email && password) {
       const user = {
         email: email,
         name: email.split('@')[0] || email,
@@ -39,28 +33,9 @@ export default function UsherLogin() {
 
       navigate('/app/usher');
     } else {
-      const { success, error } = await loginWithEmail(email, password);
-
-      if (success) {
-        const user = {
-          email: email,
-          name: email.split('@')[0] || 'Usher',
-          role: 'user' as const,
-          branch: 'Main Branch',
-        };
-
-        login(user);
-
-        toast.success("Login successful!", {
-          description: `Welcome, ${user.name}`,
-        });
-
-        navigate('/app/usher');
-      } else {
-        toast.error("Login failed", {
-          description: error || "Invalid credentials",
-        });
-      }
+      toast.error("Login failed", {
+        description: "Please enter both email and password",
+      });
     }
 
     setIsLoading(false);
@@ -69,41 +44,21 @@ export default function UsherLogin() {
   const handleGoogleLogin = async () => {
     setIsLoading(true);
 
-    if (!auth) {
-      const user = {
-        email: 'nkosi@uncommon.org',
-        name: 'Usher',
-        role: 'user' as const,
-        branch: 'Main Branch',
-      };
+    // Demo mode for Google
+    const user = {
+      email: 'nkosi@uncommon.org',
+      name: 'Usher',
+      role: 'user' as const,
+      branch: 'Main Branch',
+    };
 
-      login(user);
+    login(user);
 
-      toast.success("Login successful!", {
-        description: `Welcome, ${user.name} (Demo Mode)`,
-      });
+    toast.success("Login successful!", {
+      description: `Welcome, ${user.name} (Demo Mode)`,
+    });
 
-      navigate('/app/usher');
-    } else {
-      const { success, error } = await loginWithGoogle();
-
-      if (success) {
-        const currentUser = auth.currentUser;
-        if (currentUser?.email?.toLowerCase() === 'nkosi@uncommon.org') {
-          toast.success("Login successful!", {
-            description: `Welcome, ${currentUser.displayName || 'Usher'}`,
-          });
-          navigate('/app/usher');
-        } else {
-          toast.error("Access denied", { description: "Only nkosi@uncommon.org is allowed" });
-          await auth.signOut();
-        }
-      } else {
-        toast.error("Google login failed", {
-          description: error || "Unable to authenticate with Google",
-        });
-      }
-    }
+    navigate('/app/usher');
 
     setIsLoading(false);
   };

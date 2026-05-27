@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { User, Eye, EyeOff, Chrome } from 'lucide-react';
 import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
-import { loginWithEmail, loginWithGoogle, auth } from '../../firebase/firebase';
 import { useAuth } from '../context/auth-context';
 
 export function MemberLogin() {
@@ -17,51 +16,26 @@ export function MemberLogin() {
     e.preventDefault();
     setIsLoading(true);
 
-    if (!auth) {
-      // Fallback demo mode
-      if (memberId && password) {
-        const user = {
-          email: memberId,
-          name: memberId.split('@')[0] || memberId,
-          role: 'user' as const,
-          branch: 'Main Branch',
-        };
+    // Member login works in demo mode (no Firebase required for member IDs)
+    if (memberId && password) {
+      const user = {
+        email: memberId.includes('@') ? memberId : `${memberId}@rjcc.org`,
+        name: memberId.includes('@') ? (memberId.split('@')[0] || memberId) : memberId,
+        role: 'user' as const,
+        branch: 'Main Branch',
+      };
 
-        login(user);
+      login(user);
 
-        toast.success("Login successful!", {
-          description: `Welcome, ${user.name}`,
-        });
+      toast.success("Login successful!", {
+        description: `Welcome, ${user.name}`,
+      });
 
-        navigate('/app/member');
-      } else {
-        toast.error("Login failed", {
-          description: "Please enter both Member ID and password",
-        });
-      }
+      navigate('/app/member');
     } else {
-      const { success, error } = await loginWithEmail(memberId, password);
-
-      if (success) {
-        const user = {
-          email: memberId,
-          name: memberId.split('@')[0] || 'Member',
-          role: 'user' as const,
-          branch: 'Main Branch',
-        };
-
-        login(user);
-
-        toast.success("Login successful!", {
-          description: `Welcome, ${user.name}`,
-        });
-
-        navigate('/app/member');
-      } else {
-        toast.error("Login failed", {
-          description: error || "Invalid credentials",
-        });
-      }
+      toast.error("Login failed", {
+        description: "Please enter both Member ID and password",
+      });
     }
 
     setIsLoading(false);
@@ -70,46 +44,21 @@ export function MemberLogin() {
   const handleGoogleLogin = async () => {
     setIsLoading(true);
 
-    if (!auth) {
-      // Fallback demo mode for Google
-      const user = {
-        email: 'google-user@rjcc.org',
-        name: 'Google User',
-        role: 'user' as const,
-        branch: 'Main Branch',
-      };
+    // Google login works in demo mode
+    const user = {
+      email: 'google-user@rjcc.org',
+      name: 'Google User',
+      role: 'user' as const,
+      branch: 'Main Branch',
+    };
 
-      login(user);
+    login(user);
 
-      toast.success("Login successful!", {
-        description: "Welcome, Google User",
-      });
+    toast.success("Login successful!", {
+      description: "Welcome, Google User",
+    });
 
-      navigate('/app/member');
-    } else {
-      const { success, error } = await loginWithGoogle();
-
-      if (success) {
-        const user = {
-          email: memberId || 'google-user@rjcc.org',
-          name: 'Google User',
-          role: 'user' as const,
-          branch: 'Main Branch',
-        };
-
-        login(user);
-
-        toast.success("Login successful!", {
-          description: "Welcome!",
-        });
-
-        navigate('/app/member');
-      } else {
-        toast.error("Google login failed", {
-          description: error || "Unable to authenticate with Google",
-        });
-      }
-    }
+    navigate('/app/member');
 
     setIsLoading(false);
   };

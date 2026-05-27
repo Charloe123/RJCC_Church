@@ -138,34 +138,38 @@ export function AddAdvancedMemberModal({ open, onOpenChange }: AddAdvancedMember
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>Advanced Member Registration</DialogTitle>
-          <DialogDescription>
-            Complete member profile with family and employment details
-          </DialogDescription>
-        </DialogHeader>
+<DialogContent className="w-[95vw] sm:max-w-[700px] max-h-[90vh] overflow-y-auto p-4 sm:p-6">
+         <DialogHeader>
+           <DialogTitle className="text-base sm:text-lg">Advanced Member Registration</DialogTitle>
+           <DialogDescription className="text-xs sm:text-sm">
+             Complete member profile with family and employment details
+           </DialogDescription>
+         </DialogHeader>
 
-        <form onSubmit={handleSubmit}>
-          <Tabs defaultValue="personal" className="w-full">
-            <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="personal">
-                <User className="w-4 h-4 mr-2" />
-                Personal
-              </TabsTrigger>
-              <TabsTrigger value="marital">
-                <Heart className="w-4 h-4 mr-2" />
-                Marital
-              </TabsTrigger>
-              <TabsTrigger value="employment">
-                <Briefcase className="w-4 h-4 mr-2" />
-                Employment
-              </TabsTrigger>
-              <TabsTrigger value="family">
-                <Users className="w-4 h-4 mr-2" />
-                Children
-              </TabsTrigger>
-            </TabsList>
+         <form onSubmit={handleSubmit}>
+           <Tabs defaultValue="personal" className="w-full">
+             <TabsList className="grid w-full grid-cols-2 xs:grid-cols-4">
+               <TabsTrigger value="personal">
+                 <User className="w-4 h-4 mr-1.5 xs:mr-2" />
+                 <span className="xs:inline hidden sm:inline">Personal</span>
+                 <span className="xs:hidden inline">Info</span>
+               </TabsTrigger>
+               <TabsTrigger value="marital">
+                 <Heart className="w-4 h-4 mr-1.5 xs:mr-2" />
+                 <span className="xs:inline hidden sm:inline">Marital</span>
+                 <span className="xs:hidden inline">Spouse</span>
+               </TabsTrigger>
+               <TabsTrigger value="employment">
+                 <Briefcase className="w-4 h-4 mr-1.5 xs:mr-2" />
+                 <span className="xs:inline hidden sm:inline">Employment</span>
+                 <span className="xs:hidden inline">Work</span>
+               </TabsTrigger>
+               <TabsTrigger value="family">
+                 <Users className="w-4 h-4 mr-1.5 xs:mr-2" />
+                 <span className="xs:inline hidden sm:inline">Children</span>
+                 <span className="xs:hidden inline">Kids</span>
+               </TabsTrigger>
+             </TabsList>
 
             {/* Personal Information Tab */}
             <TabsContent value="personal" className="space-y-4 mt-4">
@@ -492,20 +496,21 @@ export function AddAdvancedMemberModal({ open, onOpenChange }: AddAdvancedMember
             </TabsContent>
           </Tabs>
 
-          <DialogFooter className="mt-6">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => onOpenChange(false)}
-            >
-              Cancel
-            </Button>
-            <Button type="submit" className="bg-black text-white hover:bg-black/90">
-              Register Member
-            </Button>
-          </DialogFooter>
-        </form>
-      </DialogContent>
-    </Dialog>
-  );
-}
+<DialogFooter className="flex-col-reverse gap-2 sm:flex-row mt-6">
+             <Button
+               type="button"
+               variant="outline"
+               onClick={() => onOpenChange(false)}
+               className="w-full sm:w-auto h-9 sm:h-10 text-xs sm:text-sm"
+             >
+               Cancel
+             </Button>
+             <Button type="submit" className="w-full sm:w-auto h-9 sm:h-10 text-xs sm:text-sm bg-black text-white hover:bg-black/90">
+               Register Member
+             </Button>
+           </DialogFooter>
+         </form>
+       </DialogContent>
+     </Dialog>
+   );
+ }

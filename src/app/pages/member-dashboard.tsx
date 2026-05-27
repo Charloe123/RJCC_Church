@@ -16,6 +16,7 @@ import {
 import { UsherSidebar } from '../components/UsherSidebar';
 import { useNavigate } from 'react-router';
 import { QRCodeSVG } from 'qrcode.react';
+import { MobileBottomNav } from '../components/mobile-bottom-nav';
 
 export default function MemberDashboard() {
   const navigate = useNavigate();
@@ -182,11 +183,12 @@ return (
           </div>
         </div> {/* Closes the Two Column Grid */}
 
-        {/* Floating Help Bubble Icon */}
-        <button className="fixed bottom-16 sm:bottom-6 right-4 sm:right-6 bg-neutral-900 text-white p-2.5 sm:p-3 rounded-full shadow-lg hover:bg-neutral-800 transition-colors lg:hidden">
-          <HelpCircle size={20} className="sm:w-6 sm:h-6" />
-        </button>
-      </main>
-    </div>
+{/* Floating Help Bubble Icon */}
+         <button className="fixed bottom-16 sm:bottom-6 right-4 sm:right-6 bg-neutral-900 text-white p-2.5 sm:p-3 rounded-full shadow-lg hover:bg-neutral-800 transition-colors lg:hidden">
+           <HelpCircle size={20} className="sm:w-6 sm:h-6" />
+         </button>
+         <MobileBottomNav />
+       </main>
+     </div>
   );
 }

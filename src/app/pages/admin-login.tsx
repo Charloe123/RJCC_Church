@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Shield, Eye, EyeOff, Chrome } from 'lucide-react';
 import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
-import { loginWithEmail, loginWithGoogle, auth } from '../../firebase/firebase';
 import { useAuth } from '../context/auth-context';
 
 export function AdminLogin() {
@@ -17,88 +16,41 @@ export function AdminLogin() {
     e.preventDefault();
     setIsLoading(true);
 
-    if (email.toLowerCase() !== 'nkosi@uncommon.org') {
-      toast.error("Access denied", { description: "Only authorized admin email is allowed" });
-      setIsLoading(false);
-      return;
+    // Demo mode - works without Firebase
+    if (email && password) {
+      const user = {
+        email: email,
+        name: email.split('@')[0] || email,
+        role: 'admin' as const,
+        branch: 'Main Branch',
+      };
+      login(user);
+      toast.success("Login successful!", { description: `Welcome, ${user.name}` });
+      navigate('/app/admin');
+    } else {
+      toast.error("Login failed", { description: "Please enter both email and password" });
     }
-
-    // Try Firebase first
-    if (auth) {
-      const { success, error } = await loginWithEmail(email, password);
-      if (success) {
-        const user = {
-          email: email,
-          name: email.split('@')[0] || 'Admin',
-          role: 'admin' as const,
-          branch: 'Main Branch',
-        };
-        login(user);
-        toast.success("Login successful!", { description: `Welcome, ${user.name}` });
-        navigate('/app/admin');
-        setIsLoading(false);
-        return;
-      }
-      // If Firebase fails, show error
-      toast.error("Login failed", { description: error || "Invalid credentials" });
-      setIsLoading(false);
-      return;
-    }
-
-    // Fallback demo mode (when auth is null)
-    const user = {
-      email: email,
-      name: email.split('@')[0] || email,
-      role: 'admin' as const,
-      branch: 'Main Branch',
-    };
-    login(user);
-    toast.success("Login successful!", { description: `Welcome, ${user.name}` });
-    navigate('/app/admin');
     setIsLoading(false);
   };
 
   const handleGoogleLogin = async () => {
     setIsLoading(true);
 
-    if (!auth) {
-      // Fallback demo mode for Google
-      const user = {
-        email: 'nkosi@uncommon.org',
-        name: 'Admin',
-        role: 'admin' as const,
-        branch: 'Main Branch',
-      };
+    // Demo mode for Google
+    const user = {
+      email: 'nkosi@uncommon.org',
+      name: 'Admin',
+      role: 'admin' as const,
+      branch: 'Main Branch',
+    };
 
-      login(user);
+    login(user);
 
-      toast.success("Login successful!", {
-        description: "Welcome, Admin (Demo Mode)",
-      });
+    toast.success("Login successful!", {
+      description: "Welcome, Admin (Demo Mode)",
+    });
 
-      navigate('/app/admin');
-    } else {
-      const { success, error } = await loginWithGoogle();
-
-      if (success) {
-        // The onAuthStateChanged in auth-context will handle Firebase user
-        // but we need to check if email is authorized
-        const currentUser = auth.currentUser;
-        if (currentUser?.email?.toLowerCase() === 'nkosi@uncommon.org') {
-          toast.success("Login successful!", {
-            description: `Welcome, ${currentUser.displayName || 'Admin'}`,
-          });
-          navigate('/app/admin');
-        } else {
-          toast.error("Access denied", { description: "Only nkosi@uncommon.org is allowed" });
-          await auth.signOut();
-        }
-      } else {
-        toast.error("Google login failed", {
-          description: error || "Unable to authenticate with Google",
-        });
-      }
-    }
+    navigate('/app/admin');
 
     setIsLoading(false);
   };

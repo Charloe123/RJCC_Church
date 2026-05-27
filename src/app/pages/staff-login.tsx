@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Shield, User, Lock, Eye, EyeOff, ShieldAlert } from 'lucide-react';
 import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
-import { loginWithEmail, auth } from '../../firebase/firebase';
 import { useAuth } from '../context/auth-context';
 
 export default function StaffLogin() {
@@ -19,49 +18,23 @@ export default function StaffLogin() {
     e.preventDefault();
     setIsLoading(true);
 
-    if (email.toLowerCase() !== 'nkosi@uncommon.org') {
-      toast.error("Access denied", { description: "Only authorized email is allowed" });
-      setIsLoading(false);
-      return;
-    }
-
-    if (auth) {
-      const { success, error } = await loginWithEmail(email, password);
-      if (success) {
-        const user = {
-          email: email,
-          name: email.split('@')[0] || 'Admin',
-          role: role as 'admin' | 'usher',
-          branch: 'Main Branch',
-        };
-        login(user);
-        toast.success("Login successful!", { description: `Welcome, ${user.name}` });
-        if (role === 'admin') {
-          navigate('/app/admin');
-        } else {
-          navigate('/app/usher');
-        }
-        setIsLoading(false);
-        return;
+    // Demo mode - works without Firebase
+    if (email && password) {
+      const user = {
+        email: email,
+        name: email.split('@')[0] || 'Admin',
+        role: role as 'admin' | 'usher',
+        branch: 'Main Branch',
+      };
+      login(user);
+      toast.success("Login successful!", { description: `Welcome, ${user.name}` });
+      if (role === 'admin') {
+        navigate('/app/admin');
+      } else {
+        navigate('/app/usher');
       }
-      toast.error("Login failed", { description: error || "Invalid credentials" });
-      setIsLoading(false);
-      return;
-    }
-
-    // Demo mode fallback
-    const user = {
-      email: email,
-      name: email.split('@')[0] || 'Admin',
-      role: role as 'admin' | 'usher',
-      branch: 'Main Branch',
-    };
-    login(user);
-    toast.success("Login successful!", { description: `Welcome, ${user.name}` });
-    if (role === 'admin') {
-      navigate('/app/admin');
     } else {
-      navigate('/app/usher');
+      toast.error("Login failed", { description: "Please enter both email and password" });
     }
     setIsLoading(false);
   };

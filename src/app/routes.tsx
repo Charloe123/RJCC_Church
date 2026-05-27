@@ -130,8 +130,13 @@ function UsherMembersView() {
 // View-only members list for member dashboard
 function MemberMembersView() {
   const [darkMode, setDarkMode] = React.useState(false);
-  const [members, setMembers] = React.useState<any[]>([]);
-  const navigate = React.useNavigate();
+  const [members, setMembers] = React.useState<any[]>([
+    { id: "1", name: "John Adeyemi", email: "john@rjcc.org", phone: "+234 800 123 4567", status: "Active", branch: "Main Branch" },
+    { id: "2", name: "Grace Okafor", email: "grace@rjcc.org", phone: "+234 800 234 5678", status: "Active", branch: "North Branch" },
+    { id: "3", name: "David Mensah", email: "david@rjcc.org", phone: "+234 800 345 6789", status: "Active", branch: "Main Branch" },
+    { id: "4", name: "Sarah Williams", email: "sarah@rjcc.org", phone: "+234 800 456 7890", status: "Inactive", branch: "South Branch" },
+    { id: "5", name: "Emmanuel Nwosu", email: "emmanuel@rjcc.org", phone: "+234 800 567 8901", status: "Active", branch: "East Branch" },
+  ]);
 
   React.useEffect(() => {
     if (!db) return;

@@ -6,7 +6,7 @@ import { onAuthStateChanged, User as FirebaseUser, signOut } from 'firebase/auth
 interface User {
   email: string;
   name: string;
-  role: 'admin' | 'user';
+  role: 'admin' | 'user' | 'member' | 'usher';
   branch: string;
 }
 
@@ -28,6 +28,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const ADMIN_EMAILS = ['nkosi@uncommon.org'];
 
   const isAuthorizedEmail = (email: string | null | undefined) => {
+    // In demo mode (no auth), allow all users
+    if (!auth) return true;
     if (!email) return false;
     return ADMIN_EMAILS.includes(email.toLowerCase());
   };

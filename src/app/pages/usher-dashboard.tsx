@@ -88,16 +88,16 @@ export default function UsherDashboard() {
     <div className={`flex min-h-screen ${darkMode ? 'bg-slate-900 text-white' : 'bg-slate-50 text-slate-800'} pt-16 lg:pt-0`}>
       <UsherSidebar darkMode={darkMode} onToggleDarkMode={() => setDarkMode(!darkMode)} active="home" basePath="usher" />
 
-      {/* MAIN CONTENT CONTAINER */}
-      <main className="flex-1 p-8 overflow-y-auto">
-        
-        {/* Welcome Header */}
-        <header className="mb-8">
-          <h2 className={`text-2xl font-bold tracking-tight flex items-center gap-2 ${darkMode ? 'text-white' : 'text-slate-900'}`}>
-            Welcome, Usher <span className="animate-pulse">👋</span>
-          </h2>
-          <p className="text-sm text-slate-500 mt-1">Your portal for member check-in and registration</p>
-        </header>
+{/* MAIN CONTENT CONTAINER */}
+       <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
+         
+         {/* Welcome Header */}
+         <header className="mb-6 sm:mb-8">
+           <h2 className={`text-xl sm:text-2xl font-bold tracking-tight flex items-center gap-2 ${darkMode ? 'text-white' : 'text-slate-900'}`}>
+             Welcome, Usher <span className="animate-pulse">👋</span>
+           </h2>
+           <p className="text-xs sm:text-sm text-slate-500 mt-1">Your portal for member check-in and registration</p>
+         </header>
 
         {/* 4-Column Stat Cards Row */}
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
@@ -156,89 +156,89 @@ export default function UsherDashboard() {
           </div>
         </section>
 
-        {/* Bottom Split Layout: Recent Activity vs. Upcoming Services + Tips */}
-        <div className="space-y-6">
-          
-          {/* Left Column: Recent Activity */}
-          <section className={`p-6 rounded-2xl border ${darkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-100 shadow-sm'}`}>
-            <h3 className="font-bold text-sm">Recent Activity</h3>
-            <p className="text-xs text-slate-400 mt-0.5 mb-4">Latest member registrations and check-ins</p>
-            
-            <div className="space-y-3">
-              {recentActivity.map((activity, idx) => (
-                <div 
-                  key={idx} 
-                  className={`flex items-center justify-between p-3 rounded-xl border ${
-                    darkMode ? 'border-slate-700 bg-slate-900/50' : 'border-slate-100 bg-slate-50'
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center font-bold text-xs">
-                      {activity.initial}
-                    </div>
-                    <div>
-                      <h4 className="text-xs font-semibold">{activity.name}</h4>
-                      <p className="text-[11px] text-slate-500">{activity.status}</p>
-                    </div>
-                  </div>
-                  <span className="text-[11px] text-slate-400">{activity.time}</span>
-                </div>
-              ))}
-            </div>
-          </section>
+{/* Bottom Split Layout: Recent Activity vs. Upcoming Services + Tips */}
+         <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 sm:gap-6">
+           
+           {/* Left Column: Recent Activity */}
+           <section className={`lg:col-span-3 p-4 sm:p-6 rounded-2xl border ${darkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-100 shadow-sm'}`}>
+             <h3 className="font-bold text-sm sm:text-base">Recent Activity</h3>
+             <p className="text-xs sm:text-sm text-slate-400 mt-0.5 mb-4">Latest member registrations and check-ins</p>
+             
+             <div className="space-y-3">
+               {recentActivity.map((activity, idx) => (
+                 <div 
+                   key={idx} 
+                   className={`flex items-center justify-between p-3 rounded-xl border ${
+                     darkMode ? 'border-slate-700 bg-slate-900/50' : 'border-slate-100 bg-slate-50'
+                   }`}
+                 >
+                   <div className="flex items-center gap-3">
+                     <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center font-bold text-xs">
+                       {activity.initial}
+                     </div>
+                     <div>
+                       <h4 className="text-xs sm:text-sm font-semibold">{activity.name}</h4>
+                       <p className="text-[11px] sm:text-xs text-slate-500">{activity.status}</p>
+                     </div>
+                   </div>
+                   <span className="text-[11px] sm:text-xs text-slate-400">{activity.time}</span>
+                 </div>
+               ))}
+             </div>
+           </section>
 
-          {/* Right Column: Upcoming Services & Tips */}
-          <div className="space-y-6">
-            
-            {/* Upcoming Services Section */}
-            <section className={`p-6 rounded-2xl border ${darkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-100 shadow-sm'}`}>
-              <h3 className="font-bold text-sm">Upcoming Services</h3>
-              <p className="text-xs text-slate-400 mt-0.5 mb-4">Prepare for these events</p>
-              
-              <div className="space-y-3">
-                {upcomingServices.map((service, idx) => (
-                  <div 
-                    key={idx} 
-                    className={`flex items-center gap-3 p-3 rounded-xl border ${
-                      darkMode ? 'border-slate-700 bg-slate-900/50' : 'border-slate-100 bg-slate-50'
-                    }`}
-                  >
-                    <div className="w-10 h-10 rounded-xl bg-black text-white flex flex-col items-center justify-center relative">
-                      <Calendar size={14} className="opacity-40 absolute top-1" />
-                      <span className="text-xs font-bold pt-3">{service.dayNum},</span>
-                    </div>
-                    <div>
-                      <h4 className="text-xs font-semibold">{service.title}</h4>
-                      <p className="text-[11px] text-slate-500">{service.time}</p>
-                      <p className="text-[10px] text-slate-400">{service.date}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </section>
+           {/* Right Column: Upcoming Services & Tips */}
+           <div className="lg:col-span-2 space-y-4 sm:space-y-6">
+             
+             {/* Upcoming Services Section */}
+             <section className={`p-4 sm:p-6 rounded-2xl border ${darkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-100 shadow-sm'}`}>
+               <h3 className="font-bold text-sm sm:text-base">Upcoming Services</h3>
+               <p className="text-xs sm:text-sm text-slate-400 mt-0.5 mb-4">Prepare for these events</p>
+               
+               <div className="space-y-3">
+                 {upcomingServices.map((service, idx) => (
+                   <div 
+                     key={idx} 
+                     className={`flex items-center gap-3 p-3 rounded-xl border ${
+                       darkMode ? 'border-slate-700 bg-slate-900/50' : 'border-slate-100 bg-slate-50'
+                     }`}
+                   >
+                     <div className="w-10 h-10 rounded-xl bg-black text-white flex flex-col items-center justify-center relative">
+                       <Calendar size={14} className="opacity-40 absolute top-1" />
+                       <span className="text-xs font-bold pt-3">{service.dayNum},</span>
+                     </div>
+                     <div>
+                       <h4 className="text-xs sm:text-sm font-semibold">{service.title}</h4>
+                       <p className="text-[11px] sm:text-xs text-slate-500">{service.time}</p>
+                       <p className="text-[10px] sm:text-xs text-slate-400">{service.date}</p>
+                     </div>
+                   </div>
+                 ))}
+               </div>
+             </section>
 
-            {/* Usher Tips Box */}
-            <section className="bg-amber-50/60 border border-amber-100 p-5 rounded-2xl">
-              <div className="flex items-center gap-2 text-amber-800 font-semibold text-xs mb-3">
-                <Lightbulb size={16} className="fill-amber-400 text-amber-500" />
-                <span>Usher Tips</span>
-              </div>
-              <ul className="text-xs text-amber-900/80 space-y-2 list-disc list-inside leading-relaxed">
-                <li>Use QR scanner for fastest check-ins — average 8 seconds per person</li>
-                <li>If QR code unavailable, use manual ID entry as backup</li>
-                <li>New visitors? Register them immediately to generate their QR code</li>
-                <li>Members can download or print their QR code for future visits</li>
-              </ul>
-            </section>
+             {/* Usher Tips Box */}
+             <section className="bg-amber-50/60 border border-amber-100 p-4 sm:p-5 rounded-2xl">
+               <div className="flex items-center gap-2 text-amber-800 font-semibold text-xs sm:text-sm mb-3">
+                 <Lightbulb size={16} className="fill-amber-400 text-amber-500" />
+                 <span>Usher Tips</span>
+               </div>
+               <ul className="text-xs sm:text-sm text-amber-900/80 space-y-2 list-disc list-inside leading-relaxed">
+                 <li>Use QR scanner for fastest check-ins — average 8 seconds per person</li>
+                 <li>If QR code unavailable, use manual ID entry as backup</li>
+                 <li>New visitors? Register them immediately to generate their QR code</li>
+                 <li>Members can download or print their QR code for future visits</li>
+               </ul>
+             </section>
 
-          </div>
-        </div>
+           </div>
+         </div>
 
-       </main>
+        </main>
 
 {/* New Member Registration Popup */}
-        {showRegistrationPopup && <NewMemberRegistrationPopup onClose={() => setShowRegistrationPopup(false)} />}
-        <MobileBottomNav />
-      </div>
-    );
-  }
+         {showRegistrationPopup && <NewMemberRegistrationPopup onClose={() => setShowRegistrationPopup(false)} />}
+         <MobileBottomNav />
+       </div>
+     );
+   }
