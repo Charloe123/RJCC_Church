@@ -5,6 +5,7 @@ import { db } from '../../firebase/firebase';
 import { collection, addDoc, serverTimestamp, query, orderBy, limit, onSnapshot } from 'firebase/firestore';
 import { toast } from 'sonner';
 import { useLocation } from 'react-router';
+import { MobileBottomNav } from '../components/mobile-bottom-nav';
 
 export default function QRCodeCheckIn() {
   const [darkMode, setDarkMode] = useState(false);
@@ -99,7 +100,7 @@ export default function QRCodeCheckIn() {
   };
 
   return (
-    <div className={`flex min-h-screen ${darkMode ? 'bg-slate-900 text-white' : 'bg-slate-50 text-slate-800'}`}>
+    <div className={`flex min-h-screen ${darkMode ? 'bg-slate-900 text-white' : 'bg-slate-50 text-slate-800'} pt-16 lg:pt-0`}>
       <UsherSidebar darkMode={darkMode} onToggleDarkMode={() => setDarkMode(!darkMode)} active="check-in" basePath={basePath} />
       
       <div className="flex-1 p-6 sm:p-8 font-sans">
@@ -247,6 +248,7 @@ export default function QRCodeCheckIn() {
             )}
           </div>
         </div>
+        <MobileBottomNav />
       </div>
     </div>
   );

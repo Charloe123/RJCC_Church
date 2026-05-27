@@ -118,7 +118,7 @@ export const router = createBrowserRouter([
 function UsherMembersView() {
   const [darkMode, setDarkMode] = React.useState(false);
   return (
-    <div className={`flex min-h-screen ${darkMode ? 'bg-slate-900' : 'bg-slate-50'}`}>
+    <div className={`flex min-h-screen ${darkMode ? 'bg-slate-900' : 'bg-slate-50'} pt-16 lg:pt-0`}>
       <UsherSidebar darkMode={darkMode} onToggleDarkMode={() => setDarkMode(!darkMode)} active="members" basePath="usher" />
       <div className="flex-1 overflow-y-auto">
         <Members />
@@ -147,7 +147,7 @@ function MemberMembersView() {
   }, []);
 
   return (
-    <div className={`flex min-h-screen ${darkMode ? 'bg-slate-900' : 'bg-slate-50'}`}>
+    <div className={`flex min-h-screen ${darkMode ? 'bg-slate-900' : 'bg-slate-50'} pt-16 lg:pt-0`}>
       <UsherSidebar darkMode={darkMode} onToggleDarkMode={() => setDarkMode(!darkMode)} active="members" basePath="member" />
       <div className="flex-1 overflow-y-auto p-6 lg:p-8">
         <div className="mb-6">

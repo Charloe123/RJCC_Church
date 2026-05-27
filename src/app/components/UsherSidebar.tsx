@@ -1,6 +1,7 @@
 import React from 'react';
-import { Home, Users, Settings, Moon, LogOut, QrCode } from 'lucide-react';
-import { useNavigate } from 'react-router';
+import { Home, Users, Settings, Moon, LogOut, QrCode, Menu, X } from 'lucide-react';
+import { useNavigate, useLocation } from 'react-router';
+import { Sheet, SheetContent, SheetTrigger, SheetClose } from './ui/sheet';
 
 interface UsherSidebarProps {
   active: 'home' | 'members' | 'check-in' | 'settings';
@@ -11,32 +12,33 @@ interface UsherSidebarProps {
 
 export function UsherSidebar({ active, darkMode, onToggleDarkMode, basePath = 'member' }: UsherSidebarProps) {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const menuItems = [
     { name: basePath === 'usher' ? 'Usher Home' : 'Member Home', icon: Home, id: 'home', path: `/app/${basePath}` },
     ...(basePath === 'usher' ? [
       { name: 'Members', icon: Users, id: 'members', path: `/app/${basePath}/members` },
-      { name: 'QR Check-In', icon: QrCode, id: 'check-in', path: `/app/${basePath}/check-in` }
+      { name: 'QR Check-In', icon: QrCode, id: 'check-in', path: `/app/${basePath}/check-in`}
     ] : []),
     { name: 'Settings', icon: Settings, id: 'settings', path: `/app/${basePath}/settings` },
   ];
 
   const userLabel = basePath === 'usher' ? 'Usher' : 'Member';
 
-  return (
-    <div className="w-[280px] h-screen bg-black text-gray-400 flex flex-col justify-between p-4 font-sans selection:bg-transparent sticky top-0">
+  const SidebarContent = () => (
+    <div className="flex flex-col h-full justify-between">
       {/* Top Section */}
       <div className="flex flex-col gap-8">
         {/* Header/Logo */}
-          <div className="flex items-center gap-3 px-2">
-            <div className="w-10 h-10 bg-white flex items-center justify-center">
-              <img src="images/WhatsApp Image 2026-05-22 at 12.13.26.jpeg" alt="RJCC Logo" className="w-full h-full" />
-            </div>
-            <div>
-              <h1 className="text-white font-bold text-lg leading-tight">RJCC</h1>
-              <p className="text-xs text-gray-500 font-medium">Church Management</p>
-            </div>
+        <div className="flex items-center gap-3 px-2">
+          <div className="w-10 h-10 bg-white flex items-center justify-center">
+            <img src="images/WhatsApp Image 2026-05-22 at 12.13.26.jpeg" alt="RJCC Logo" className="w-full h-full" />
           </div>
+          <div>
+            <h1 className="text-white font-bold text-lg leading-tight">RJCC</h1>
+            <p className="text-xs text-gray-500 font-medium">Church Management</p>
+          </div>
+        </div>
 
         {/* Navigation Links */}
         <nav className="flex flex-col gap-1">
@@ -94,5 +96,33 @@ export function UsherSidebar({ active, darkMode, onToggleDarkMode, basePath = 'm
         </button>
       </div>
     </div>
+  );
+
+  return (
+    <>
+      {/* Mobile Header with Menu */}
+      <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-black border-b border-zinc-800 z-40 flex items-center justify-between px-4">
+        <Sheet>
+          <SheetTrigger asChild>
+            <button className="p-2 text-white">
+              <Menu size={24} />
+            </button>
+          </SheetTrigger>
+          <SheetContent side="left" className="w-64 bg-black p-4 border-r-0">
+            <SidebarContent />
+          </SheetContent>
+        </Sheet>
+        <div className="flex items-center gap-2">
+          <img src="images/WhatsApp Image 2026-05-22 at 12.13.26.jpeg" alt="RJCC Logo" className="w-8 h-8" />
+          <span className="text-white font-bold">RJCC</span>
+        </div>
+        <div className="w-8" />
+      </div>
+
+      {/* Desktop Sidebar */}
+      <div className="hidden lg:flex w-[280px] h-screen bg-black text-gray-400 flex-col justify-between p-4 font-sans selection:bg-transparent sticky top-0">
+        <SidebarContent />
+      </div>
+    </>
   );
 }

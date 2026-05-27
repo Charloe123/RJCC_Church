@@ -15,6 +15,7 @@ import NewMemberRegistrationPopup from '../components/new-member-registration-po
 import { UsherSidebar } from '../components/UsherSidebar';
 import { db } from '../../firebase/firebase';
 import { collection, query, orderBy, limit, onSnapshot, where } from 'firebase/firestore';
+import { MobileBottomNav } from '../components/mobile-bottom-nav';
 
 export default function UsherDashboard() {
   const navigate = useNavigate();
@@ -84,7 +85,7 @@ export default function UsherDashboard() {
   ];
 
   return (
-    <div className={`flex min-h-screen ${darkMode ? 'bg-slate-900 text-white' : 'bg-slate-50 text-slate-800'}`}>
+    <div className={`flex min-h-screen ${darkMode ? 'bg-slate-900 text-white' : 'bg-slate-50 text-slate-800'} pt-16 lg:pt-0`}>
       <UsherSidebar darkMode={darkMode} onToggleDarkMode={() => setDarkMode(!darkMode)} active="home" basePath="usher" />
 
       {/* MAIN CONTENT CONTAINER */}
@@ -235,8 +236,9 @@ export default function UsherDashboard() {
 
        </main>
 
-       {/* New Member Registration Popup */}
-       {showRegistrationPopup && <NewMemberRegistrationPopup onClose={() => setShowRegistrationPopup(false)} />}
-     </div>
-   );
- }
+{/* New Member Registration Popup */}
+        {showRegistrationPopup && <NewMemberRegistrationPopup onClose={() => setShowRegistrationPopup(false)} />}
+        <MobileBottomNav />
+      </div>
+    );
+  }

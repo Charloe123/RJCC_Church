@@ -5,6 +5,7 @@ import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Heart, CreditCard, Banknote, Smartphone, DollarSign } from "lucide-react";
 import { UsherSidebar } from '../components/UsherSidebar';
+import { MobileBottomNav } from '../components/mobile-bottom-nav';
 
 const donationTypes = [
   { id: "tithe", label: "Tithe", icon: Heart },
@@ -40,8 +41,8 @@ export default function Donate() {
   };
 
   return (
-    <div className={`flex min-h-screen ${darkMode ? 'bg-slate-900' : 'bg-slate-50'}`}>
-      <UsherSidebar darkMode={darkMode} onToggleDarkMode={() => setDarkMode(!darkMode)} active="home" />
+    <div className={`flex min-h-screen ${darkMode ? 'bg-slate-900' : 'bg-slate-50'} pt-16 lg:pt-0`}>
+      <UsherSidebar darkMode={darkMode} onToggleDarkMode={() => setDarkMode(!darkMode)} active="home" basePath="member" />
       
       <div className="flex-1 p-6 lg:p-8 space-y-6">
         <div>
@@ -202,6 +203,7 @@ export default function Donate() {
             Donate Now
           </Button>
         </form>
+        <MobileBottomNav />
       </div>
     </div>
   );

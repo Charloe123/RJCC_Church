@@ -4,19 +4,29 @@ import {
   Users,
   Calendar,
   DollarSign,
-  Settings
+  Settings,
+  QrCode
 } from "lucide-react";
-
-const navItems = [
-  { path: "/", label: "Home", icon: LayoutDashboard },
-  { path: "/members", label: "Members", icon: Users },
-  { path: "/attendance", label: "Attendance", icon: Calendar },
-  { path: "/giving", label: "Giving", icon: DollarSign },
-  { path: "/settings", label: "Settings", icon: Settings },
-];
 
 export function MobileBottomNav() {
   const location = useLocation();
+  const isUsher = location.pathname.includes('/usher');
+  const basePath = isUsher ? '/app/usher' : '/app/member';
+
+  const memberNavItems = [
+    { path: `${basePath}`, label: "Home", icon: LayoutDashboard },
+    { path: `${basePath}/donate`, label: "Donate", icon: DollarSign },
+    { path: `${basePath}/settings`, label: "Settings", icon: Settings },
+  ];
+
+  const usherNavItems = [
+    { path: `${basePath}`, label: "Home", icon: LayoutDashboard },
+    { path: `${basePath}/members`, label: "Members", icon: Users },
+    { path: `${basePath}/check-in`, label: "Check-In", icon: QrCode },
+    { path: `${basePath}/settings`, label: "Settings", icon: Settings },
+  ];
+
+  const navItems = isUsher ? usherNavItems : memberNavItems;
 
   return (
     <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-black border-t border-[#1A1A1A] z-50 safe-area-inset-bottom">

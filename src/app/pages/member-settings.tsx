@@ -7,12 +7,13 @@ import { Switch } from "../components/ui/switch";
 import { Separator } from "../components/ui/separator";
 import { Bell, Shield, Database } from "lucide-react";
 import { UsherSidebar } from '../components/UsherSidebar';
+import { MobileBottomNav } from '../components/mobile-bottom-nav';
 
 export default function MemberSettings() {
   const [darkMode, setDarkMode] = useState(false);
   
   return (
-    <div className="flex min-h-screen bg-slate-50">
+    <div className={`flex min-h-screen ${darkMode ? 'bg-slate-900' : 'bg-slate-50'} pt-16 lg:pt-0`}>
       <UsherSidebar darkMode={darkMode} onToggleDarkMode={() => setDarkMode(!darkMode)} active="settings" basePath="member" />
       
       <div className="flex-1 p-6 lg:p-8 space-y-6">
@@ -218,6 +219,7 @@ export default function MemberSettings() {
             </div>
           </CardContent>
         </Card>
+        <MobileBottomNav />
       </div>
     </div>
   );
